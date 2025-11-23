@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Why Agile? - 8 Key Reasons</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap');
+
+        :root {
+            --bg: #0f172a;
+            --card-bg: rgba(30, 41, 59, 0.6);
+            --text: #f8fafc;
+            --border: rgba(148, 163, 184, 0.1);
+            
+            /* Accents for 8 Cards */
+            --c1: #06b6d4; /* Cyan */
+            --c2: #8b5cf6; /* Purple */
+            --c3: #ec4899; /* Pink */
+            --c4: #f97316; /* Orange */
+            --c5: #eab308; /* Yellow */
+            --c6: #22c55e; /* Green */
+            --c7: #ef4444; /* Red */
+            --c8: #3b82f6; /* Blue */
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            font-family: 'Inter', sans-serif;
+            padding: 40px;
+            margin: 0;
+            background-image: 
+                linear-gradient(to bottom right, rgba(15, 23, 42, 0.9), rgba(15, 23, 42, 0.95)),
+                url('https://www.transparenttextures.com/patterns/cubes.png'); 
+        }
+
+        /* --- HEADER --- */
+        header {
+            text-align: center;
+            margin-bottom: 60px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        h1 {
+            font-size: 2.2rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            background: linear-gradient(to right, #fff, #94a3b8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 10px;
+        }
+
+        p.subtitle {
+            color: #94a3b8;
+            font-size: 1.1rem;
+        }
+
+        /* --- LAYOUT --- */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* --- GRID --- */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 25px;
+            transition: transform 0.3s, border-color 0.3s;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .card-num {
+            font-size: 2rem;
+            font-weight: 800;
+            opacity: 0.2;
+            position: absolute;
+            top: 15px;
+            right: 20px;
+        }
+
+        .icon {
+            font-size: 2rem;
+            margin-bottom: 15px;
+            display: inline-block;
+        }
+
+        h3 {
+            font-size: 1.1rem;
+            margin-bottom: 10px;
+            color: #fff;
+            font-weight: 700;
+        }
+
+        p {
+            color: #cbd5e1;
+            line-height: 1.5;
+            font-size: 0.9rem;
+        }
+
+        /* Dynamic Card Colors */
+        .card-1 { border-top: 3px solid var(--c1); }
+        .card-1 .card-num { color: var(--c1); }
+        
+        .card-2 { border-top: 3px solid var(--c2); }
+        .card-2 .card-num { color: var(--c2); }
+
+        .card-3 { border-top: 3px solid var(--c3); }
+        .card-3 .card-num { color: var(--c3); }
+
+        .card-4 { border-top: 3px solid var(--c4); }
+        .card-4 .card-num { color: var(--c4); }
+
+        .card-5 { border-top: 3px solid var(--c5); }
+        .card-5 .card-num { color: var(--c5); }
+
+        .card-6 { border-top: 3px solid var(--c6); }
+        .card-6 .card-num { color: var(--c6); }
+
+        .card-7 { border-top: 3px solid var(--c7); }
+        .card-7 .card-num { color: var(--c7); }
+
+        .card-8 { border-top: 3px solid var(--c8); }
+        .card-8 .card-num { color: var(--c8); }
+
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Agile vs Waterfall</h1>
+        <p class="subtitle">Why we chose Agile for SwiftRide</p>
+    </header>
+
+    <div class="container">
+        <div class="grid">
+
+            <div class="card card-1">
+                <div class="card-num">01</div>
+                <div class="icon">🏆</div>
+                <h3>Superior Methodology</h3>
+                <p>Agile overscores Waterfall because it is flexible, customer-centric, faster, collaborative and making it ideal for modern projects.</p>
+            </div>
+
+            <div class="card card-2">
+                <div class="card-num">02</div>
+                <div class="icon">🔄</div>
+                <h3>High Flexibility</h3>
+                <p>Agile is so Flexible and adaptable when compared to Waterfall method.</p>
+            </div>
+
+            <div class="card card-3">
+                <div class="card-num">03</div>
+                <div class="icon">📝</div>
+                <h3>Adaptable Requirements</h3>
+                <p>Requirement changes can be pushed in later part of the development.</p>
+            </div>
+
+            <div class="card card-4">
+                <div class="card-num">04</div>
+                <div class="icon">🤝</div>
+                <h3>Continuous Communication</h3>
+                <p>Communication with Client and Engineering team is Continuous which reflects positive attitude to the team.</p>
+            </div>
+
+            <div class="card card-5">
+                <div class="card-num">05</div>
+                <div class="icon">🔬</div>
+                <h3>Early Risk Detection</h3>
+                <p>Small increments make it easier to test, adjust, and detect risks early.</p>
+            </div>
+
+            <div class="card card-6">
+                <div class="card-num">06</div>
+                <div class="icon">✅</div>
+                <h3>Continuous Testing</h3>
+                <p>Continuous testing, regular reviews, frequent integration where in testing in waterfall happened after the development phase.</p>
+            </div>
+
+            <div class="card card-7">
+                <div class="card-num">07</div>
+                <div class="icon">🚀</div>
+                <h3>Frequent Releases</h3>
+                <p>Frequent small releases where in waterfall delivers at the end.</p>
+            </div>
+
+            <div class="card card-8">
+                <div class="card-num">08</div>
+                <div class="icon">🛡️</div>
+                <h3>Risk Mitigation</h3>
+                <p>In Agile Risk can be identified early and gets mitigated where in waterfall Risk is identified after testing phase.</p>
+            </div>
+
+        </div>
+    </div>
+
+</body>
+</html>
