@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Part B | Project Execution</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;500;700&family=Inter:wght@300;400;600&display=swap');
+
+        :root {
+            --bg: #050510;
+            --card-bg: rgba(30, 41, 59, 0.4);
+            --glass: rgba(255, 255, 255, 0.05);
+            --border: rgba(255, 255, 255, 0.1);
+            --text: #f8fafc;
+            
+            /* Neon Accents */
+            --cyan: #06b6d4;
+            --purple: #8b5cf6;
+            --pink: #ec4899;
+            --orange: #f97316;
+            --green: #22c55e;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            font-family: 'Inter', sans-serif;
+            min-height: 100vh;
+            overflow-x: hidden;
+            background-image: 
+                radial-gradient(circle at 80% 10%, rgba(139, 92, 246, 0.1) 0%, transparent 30%),
+                radial-gradient(circle at 20% 90%, rgba(6, 182, 212, 0.1) 0%, transparent 30%);
+        }
+
+        /* --- NAVBAR (Consistent with Home) --- */
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 50px;
+            background: rgba(15, 23, 42, 0.8);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .logo {
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 700;
+            font-size: 1.5rem;
+            background: linear-gradient(to right, #fff, var(--cyan));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-decoration: none;
+        }
+
+        .nav-links { display: flex; gap: 30px; }
+
+        .nav-item {
+            text-decoration: none;
+            color: #94a3b8;
+            font-weight: 500;
+            font-size: 0.95rem;
+            transition: 0.3s;
+        }
+        .nav-item:hover { color: #fff; text-shadow: 0 0 10px rgba(255,255,255,0.5); }
+        
+        .active-page { color: var(--cyan); font-weight: 700; border-bottom: 2px solid var(--cyan); }
+
+        /* --- HERO --- */
+        .header-section {
+            text-align: center;
+            padding: 60px 20px 40px;
+        }
+
+        h1 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 3rem;
+            margin-bottom: 10px;
+            background: linear-gradient(to right, #fff, #94a3b8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        p.subtitle { color: #64748b; font-size: 1.1rem; margin-bottom: 40px; }
+
+        /* --- DASHBOARD GRID --- */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px 60px;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 25px;
+        }
+
+        /* --- NAVIGATION CARDS --- */
+        .nav-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 30px;
+            text-decoration: none;
+            color: #fff;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            min-height: 180px;
+            backdrop-filter: blur(10px);
+        }
+
+        .nav-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 4px;
+            background: var(--border);
+            transition: 0.3s;
+        }
+
+        .nav-card:hover {
+            transform: translateY(-5px);
+            background: rgba(255,255,255,0.08);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+
+        .card-icon {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+            opacity: 0.8;
+        }
+
+        .card-title {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .card-desc {
+            font-size: 0.9rem;
+            color: #94a3b8;
+            line-height: 1.5;
+        }
+
+        /* Arrow Icon */
+        .arrow {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            font-size: 1.2rem;
+            opacity: 0;
+            transform: translateX(-10px);
+            transition: 0.3s;
+        }
+
+        .nav-card:hover .arrow {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        /* --- THEMES per Card --- */
+        
+        /* 1. Backlog */
+        .c1::before { background: var(--cyan); }
+        .c1:hover { border-color: var(--cyan); box-shadow: 0 0 20px rgba(6, 182, 212, 0.2); }
+        .c1 .card-title { color: var(--cyan); }
+
+        /* 2. Epics Tree */
+        .c2::before { background: var(--purple); }
+        .c2:hover { border-color: var(--purple); box-shadow: 0 0 20px rgba(139, 92, 246, 0.2); }
+        .c2 .card-title { color: var(--purple); }
+
+        /* 3. Detail Cards */
+        .c3::before { background: var(--pink); }
+        .c3:hover { border-color: var(--pink); box-shadow: 0 0 20px rgba(236, 72, 153, 0.2); }
+        .c3 .card-title { color: var(--pink); }
+
+        /* 4. Calendar */
+        .c4::before { background: var(--orange); }
+        .c4:hover { border-color: var(--orange); box-shadow: 0 0 20px rgba(249, 115, 22, 0.2); }
+        .c4 .card-title { color: var(--orange); }
+
+        /* 5. Analysis */
+        .c5::before { background: var(--green); }
+        .c5:hover { border-color: var(--green); box-shadow: 0 0 20px rgba(34, 197, 94, 0.2); }
+        .c5 .card-title { color: var(--green); }
+
+        /* Full width for last item if odd number */
+        .col-span-2 { grid-column: span 2; }
+        @media (max-width: 768px) { .col-span-2 { grid-column: span 1; } }
+
+    </style>
+</head>
+<body>
+
+    <nav>
+        <a href="index.html" class="logo">SWIFTRIDE.</a>
+        <div class="nav-links">
+            <a href="part_a.html" class="nav-item">Part A</a>
+            <a href="part_b.html" class="nav-item active-page">Part B</a>
+            <a href="part_c.html" class="nav-item">Part C</a>
+        </div>
+    </nav>
+
+    <header class="header-section">
+        <div style="display:inline-block; padding:5px 15px; border:1px solid var(--cyan); color:var(--cyan); border-radius:20px; font-size:0.8rem; margin-bottom:15px; font-weight:600;">PART B</div>
+        <h1>Implementation & Planning</h1>
+        <p class="subtitle">Artifacts covering Sprints, User Stories, and Analytical breakdown.</p>
+    </header>
+
+    <div class="container">
+        <div class="grid">
+
+            <a href="index2.html" class="nav-card c1">
+                <div class="card-icon">📋</div>
+                <div>
+                    <div class="card-title">User Stories & Backlog</div>
+                    <div class="card-desc">Comprehensive table of all user stories, sprint allocations, and estimations.</div>
+                </div>
+                <div class="arrow">→</div>
+            </a>
+
+            <a href="index4.html" class="nav-card c2">
+                <div class="card-icon">🌳</div>
+                <div>
+                    <div class="card-title">Epics Distribution</div>
+                    <div class="card-desc">Interactive folding tree diagram visualizing the hierarchy from Epics to Features.</div>
+                </div>
+                <div class="arrow">→</div>
+            </a>
+
+            <a href="index3.html" class="nav-card c3">
+                <div class="card-icon">🃏</div>
+                <div>
+                    <div class="card-title">User Stories in Detail</div>
+                    <div class="card-desc">Detailed card-based view of every user story with role-specific assignments.</div>
+                </div>
+                <div class="arrow">→</div>
+            </a>
+
+            <a href="AdvancedCalender.html" class="nav-card c4">
+                <div class="card-icon">📅</div>
+                <div>
+                    <div class="card-title">Sprint Calendar</div>
+                    <div class="card-desc">Day-by-day execution plan spanning 900 days across 7 sprints.</div>
+                </div>
+                <div class="arrow">→</div>
+            </a>
+
+            <a href="Analysis.html" class="nav-card c5 col-span-2">
+                <div class="card-icon">📊</div>
+                <div>
+                    <div class="card-title">Project Analysis</div>
+                    <div class="card-desc">Executive dashboard showing resource allocation, epic progress, and key metrics.</div>
+                </div>
+                <div class="arrow">→</div>
+            </a>
+
+        </div>
+    </div>
+
+</body>
+</html>

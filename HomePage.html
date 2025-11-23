@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Software Engineering - Group 1</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;500;700&family=Inter:wght@300;400;600&display=swap');
+
+        :root {
+            --bg: #050510;
+            --card-bg: rgba(30, 41, 59, 0.4);
+            --glass: rgba(255, 255, 255, 0.05);
+            --border: rgba(255, 255, 255, 0.1);
+            --text: #f8fafc;
+            
+            /* Neon Accents */
+            --cyan: #06b6d4;
+            --purple: #8b5cf6;
+            --pink: #ec4899;
+            --blue: #3b82f6;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            font-family: 'Inter', sans-serif;
+            min-height: 100vh;
+            overflow-x: hidden;
+            /* Deep Space Background */
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(139, 92, 246, 0.15) 0%, transparent 20%),
+                radial-gradient(circle at 90% 80%, rgba(6, 182, 212, 0.15) 0%, transparent 20%);
+        }
+
+        /* --- NAVBAR --- */
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 50px;
+            background: rgba(15, 23, 42, 0.8);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .logo {
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 700;
+            font-size: 1.5rem;
+            background: linear-gradient(to right, #fff, var(--cyan));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 30px;
+        }
+
+        .nav-item {
+            text-decoration: none;
+            color: #94a3b8;
+            font-weight: 500;
+            font-size: 0.95rem;
+            padding: 8px 16px;
+            border-radius: 20px;
+            transition: 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .nav-item::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: var(--glass);
+            transform: scaleX(0);
+            transform-origin: right;
+            transition: transform 0.3s ease;
+            z-index: -1;
+            border-radius: 20px;
+        }
+
+        .nav-item:hover {
+            color: #fff;
+        }
+
+        .nav-item:hover::before {
+            transform: scaleX(1);
+            transform-origin: left;
+        }
+
+        .nav-active {
+            color: var(--cyan);
+            background: rgba(6, 182, 212, 0.1);
+            border: 1px solid rgba(6, 182, 212, 0.3);
+        }
+
+        /* --- HERO SECTION --- */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 60px 20px;
+            text-align: center;
+        }
+
+        h1 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 4rem;
+            font-weight: 800;
+            line-height: 1.1;
+            margin-bottom: 10px;
+            background: linear-gradient(to right, #fff 20%, var(--purple), var(--cyan));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: shine 5s linear infinite;
+            background-size: 200%;
+        }
+
+        @keyframes shine {
+            to { background-position: 200% center; }
+        }
+
+        .group-badge {
+            display: inline-block;
+            margin-bottom: 30px;
+            padding: 8px 20px;
+            background: rgba(139, 92, 246, 0.1);
+            border: 1px solid var(--purple);
+            border-radius: 50px;
+            color: var(--purple);
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            box-shadow: 0 0 20px rgba(139, 92, 246, 0.2);
+        }
+
+        /* --- MEMBER GRID --- */
+        .members-section {
+            margin-top: 80px;
+        }
+
+        h2 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.8rem;
+            margin-bottom: 40px;
+            color: #cbd5e1;
+        }
+
+        .grid {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 30px;
+        }
+
+        .member-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            padding: 30px;
+            width: 250px;
+            border-radius: 16px;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .member-card::after {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 2px;
+            background: linear-gradient(90deg, transparent, var(--cyan), transparent);
+            transform: translateX(-100%);
+            transition: 0.5s;
+        }
+
+        .member-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            border-color: rgba(255,255,255,0.2);
+        }
+
+        .member-card:hover::after {
+            transform: translateX(100%);
+        }
+
+        .avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #1e293b, #0f172a);
+            border: 2px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            margin-bottom: 20px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.2);
+        }
+
+        .name {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 5px;
+        }
+
+        .id-num {
+            font-size: 0.8rem;
+            color: #64748b;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* Individual Colors for Avatars */
+        .m1 .avatar { color: var(--cyan); border-color: var(--cyan); text-shadow: 0 0 10px var(--cyan); }
+        .m2 .avatar { color: var(--purple); border-color: var(--purple); text-shadow: 0 0 10px var(--purple); }
+        .m3 .avatar { color: var(--pink); border-color: var(--pink); text-shadow: 0 0 10px var(--pink); }
+        .m4 .avatar { color: var(--blue); border-color: var(--blue); text-shadow: 0 0 10px var(--blue); }
+        .m5 .avatar { color: #4ade80; border-color: #4ade80; text-shadow: 0 0 10px #4ade80; }
+
+    </style>
+</head>
+<body>
+
+    <nav>
+        <div class="logo">SWIFTRIDE.</div>
+        <div class="nav-links">
+            <a href="PartA.html" class="nav-item">Part A</a>
+            <a href="PARTB/PartB_Hero.html" class="nav-item">Part B</a>
+            <a href="PARTC.html" class="nav-item">Part C</a>
+        </div>
+    </nav>
+
+    <div class="container">
+        
+        <div class="group-badge">GROUP 01</div>
+        
+        <h1>Software Engineering<br>Assignment</h1>
+        
+        <div class="members-section">
+            <h2>Team Members</h2>
+            
+            <div class="grid">
+                <div class="member-card m1">
+                    <div class="avatar">S</div>
+                    <div class="name">Sai Sujit</div>
+                    <div class="id-num">Lead Developer</div>
+                </div>
+
+                <div class="member-card m2">
+                    <div class="avatar">S</div>
+                    <div class="name">Shivansh Jain</div>
+                    <div class="id-num">Backend Architect</div>
+                </div>
+
+                <div class="member-card m3">
+                    <div class="avatar">A</div>
+                    <div class="name">Aryan Singh</div>
+                    <div class="id-num">Frontend Engineer</div>
+                </div>
+
+                <div class="member-card m4">
+                    <div class="avatar">S</div>
+                    <div class="name">Satyam Kaushik</div>
+                    <div class="id-num">QA Engineer</div>
+                </div>
+
+                <div class="member-card m5">
+                    <div class="avatar">C</div>
+                    <div class="name">Chandraveer Singh</div>
+                    <div class="id-num">Project Manager</div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</body>
+</html>
