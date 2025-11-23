@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cab Booking Project - Exact Data View</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+        :root {
+            --text-main: #ffffff;
+            
+            /* SPRINT COLORS (RGB for transparency) */
+            --c-sprint1: 0, 242, 255;   /* Cyan */
+            --c-sprint2: 188, 19, 254;  /* Purple */
+            --c-sprint3: 255, 0, 85;    /* Pink */
+            --c-sprint4: 255, 145, 0;   /* Orange */
+            --c-sprint5: 252, 232, 3;   /* Yellow */
+            --c-sprint6: 0, 255, 65;    /* Green */
+            --c-sprint7: 255, 49, 49;   /* Red */
+            --c-misc:    150, 150, 150; /* Grey for Misc rows */
+
+            /* ROLE COLORS */
+            --role-dev: #00e5ff;
+            --role-qa: #00ff9d;
+            --role-ba: #ffae00;
+            --role-arch: #d400ff;
+        }
+
+        body {
+            margin: 0;
+            padding: 40px;
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(-45deg, #050510, #2b1055, #004e92, #000000);
+            background-size: 400% 400%;
+            animation: glideBackground 20s ease infinite;
+            color: var(--text-main);
+            min-height: 100vh;
+        }
+
+        @keyframes glideBackground {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        header {
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        h1 {
+            font-weight: 300;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin: 0;
+            background: linear-gradient(to right, #fff, #a0a0a0);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* Legend Style */
+        .legend {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 15px;
+            flex-wrap: wrap;
+        }
+        .legend-item {
+            font-size: 0.75rem;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            color: rgba(255,255,255,0.9);
+            background: rgba(0,0,0,0.4);
+            padding: 5px 12px;
+            border-radius: 20px;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        .dot { width: 10px; height: 10px; border-radius: 50%; }
+
+        /* Table Styling */
+        .table-wrapper {
+            width: 100%;
+            overflow-x: auto;
+            border-radius: 12px;
+            padding-bottom: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: separate; 
+            border-spacing: 0 10px; 
+            min-width: 1100px;
+        }
+
+        thead {
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        th {
+            padding: 15px 20px;
+            text-align: left;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: #ccc;
+            font-weight: 600;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255,255,255,0.2);
+        }
+
+        tbody tr {
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+            transition: all 0.3s ease;
+        }
+
+        tbody tr:hover {
+            transform: scale(1.01);
+            z-index: 5;
+            position: relative;
+        }
+
+        td {
+            padding: 14px 20px;
+            font-size: 0.9rem;
+            color: #fff;
+            vertical-align: middle;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        td:first-child {
+            border-top-left-radius: 10px;
+            border-bottom-left-radius: 10px;
+            border-left: 1px solid rgba(255,255,255,0.1);
+        }
+        td:last-child {
+            border-top-right-radius: 10px;
+            border-bottom-right-radius: 10px;
+            border-right: 1px solid rgba(255,255,255,0.1);
+        }
+
+        /* --- ROLE BADGES --- */
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 3px 6px;
+            border-radius: 4px;
+            margin-right: 4px;
+            margin-bottom: 4px;
+            font-size: 0.7rem;
+            font-weight: 700;
+            background: rgba(0,0,0,0.5); 
+            border: 1px solid transparent;
+            min-width: 50px;
+        }
+
+        .b-dev { border-color: var(--role-dev); color: var(--role-dev); }
+        .b-qa  { border-color: var(--role-qa);  color: var(--role-qa); }
+        .b-ba  { border-color: var(--role-ba);  color: var(--role-ba); }
+        .b-arch{ border-color: var(--role-arch);color: var(--role-arch); }
+
+        /* --- SPRINT ROW COLORS --- */
+        tr.sprint-1 { background: rgba(var(--c-sprint1), 0.15); box-shadow: 0 4px 15px rgba(var(--c-sprint1), 0.1); border: 1px solid rgba(var(--c-sprint1), 0.3); }
+        tr.sprint-1:hover { background: rgba(var(--c-sprint1), 0.25); }
+        tr.sprint-1 .col-sprint { color: rgb(var(--c-sprint1)); }
+
+        tr.sprint-2 { background: rgba(var(--c-sprint2), 0.15); box-shadow: 0 4px 15px rgba(var(--c-sprint2), 0.1); border: 1px solid rgba(var(--c-sprint2), 0.3); }
+        tr.sprint-2:hover { background: rgba(var(--c-sprint2), 0.25); }
+        tr.sprint-2 .col-sprint { color: rgb(var(--c-sprint2)); }
+
+        tr.sprint-3 { background: rgba(var(--c-sprint3), 0.15); box-shadow: 0 4px 15px rgba(var(--c-sprint3), 0.1); border: 1px solid rgba(var(--c-sprint3), 0.3); }
+        tr.sprint-3:hover { background: rgba(var(--c-sprint3), 0.25); }
+        tr.sprint-3 .col-sprint { color: rgb(var(--c-sprint3)); }
+
+        tr.sprint-4 { background: rgba(var(--c-sprint4), 0.15); box-shadow: 0 4px 15px rgba(var(--c-sprint4), 0.1); border: 1px solid rgba(var(--c-sprint4), 0.3); }
+        tr.sprint-4:hover { background: rgba(var(--c-sprint4), 0.25); }
+        tr.sprint-4 .col-sprint { color: rgb(var(--c-sprint4)); }
+
+        tr.sprint-5 { background: rgba(var(--c-sprint5), 0.15); box-shadow: 0 4px 15px rgba(var(--c-sprint5), 0.1); border: 1px solid rgba(var(--c-sprint5), 0.3); }
+        tr.sprint-5:hover { background: rgba(var(--c-sprint5), 0.25); }
+        tr.sprint-5 .col-sprint { color: rgb(var(--c-sprint5)); }
+
+        tr.sprint-6 { background: rgba(var(--c-sprint6), 0.15); box-shadow: 0 4px 15px rgba(var(--c-sprint6), 0.1); border: 1px solid rgba(var(--c-sprint6), 0.3); }
+        tr.sprint-6:hover { background: rgba(var(--c-sprint6), 0.25); }
+        tr.sprint-6 .col-sprint { color: rgb(var(--c-sprint6)); }
+
+        tr.sprint-7 { background: rgba(var(--c-sprint7), 0.15); box-shadow: 0 4px 15px rgba(var(--c-sprint7), 0.1); border: 1px solid rgba(var(--c-sprint7), 0.3); }
+        tr.sprint-7:hover { background: rgba(var(--c-sprint7), 0.25); }
+        tr.sprint-7 .col-sprint { color: rgb(var(--c-sprint7)); }
+
+        /* Misc Rows */
+        tr.misc { background: rgba(var(--c-misc), 0.1); border: 1px dashed rgba(255,255,255,0.2); }
+        tr.misc td { color: #aaa; font-style: italic; }
+
+
+        /* --- FOOTER FOR TOTAL --- */
+        tfoot tr {
+            background: rgba(0,0,0,0.5);
+            backdrop-filter: blur(15px);
+            border-top: 3px solid #fff;
+        }
+        tfoot td {
+            padding: 25px;
+            font-size: 1.1rem;
+            letter-spacing: 1px;
+            color: #fff;
+        }
+        .total-highlight {
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: #fff;
+            text-shadow: 0 0 10px rgba(255,255,255,0.8), 0 0 20px rgba(255,255,255,0.5);
+        }
+
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Cab Booking Project - 900 Days</h1>
+        <div class="legend">
+            <div class="legend-item"><span class="dot" style="background:rgb(var(--c-sprint1))"></span>Sprint 1</div>
+            <div class="legend-item"><span class="dot" style="background:rgb(var(--c-sprint2))"></span>Sprint 2</div>
+            <div class="legend-item"><span class="dot" style="background:rgb(var(--c-sprint3))"></span>Sprint 3</div>
+            <div class="legend-item"><span class="dot" style="background:rgb(var(--c-sprint4))"></span>Sprint 4</div>
+            <div class="legend-item"><span class="dot" style="background:rgb(var(--c-sprint5))"></span>Sprint 5</div>
+            <div class="legend-item"><span class="dot" style="background:rgb(var(--c-sprint6))"></span>Sprint 6</div>
+            <div class="legend-item"><span class="dot" style="background:rgb(var(--c-sprint7))"></span>Sprint 7</div>
+        </div>
+        <div class="legend" style="margin-top:10px;">
+            <div class="legend-item" style="border-color:var(--role-dev); color:var(--role-dev)">DEV</div>
+            <div class="legend-item" style="border-color:var(--role-qa); color:var(--role-qa)">QA</div>
+            <div class="legend-item" style="border-color:var(--role-ba); color:var(--role-ba)">BA</div>
+            <div class="legend-item" style="border-color:var(--role-arch); color:var(--role-arch)">ARCH</div>
+        </div>
+    </header>
+
+    <div class="table-wrapper">
+        <table>
+            <thead>
+                <tr>
+                    <th width="15%">Epic</th>
+                    <th width="15%">Feature</th>
+                    <th width="35%">User Story</th>
+                    <th width="10%">Sprint</th>
+                    <th width="25%">Full Estimates (Days)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="sprint-1">
+                    <td class="col-epic">User Registration</td>
+                    <td class="col-feature">Registration</td>
+                    <td class="col-story">As a new user, I Should be able to Register through app successfully.</td>
+                    <td class="col-sprint">Sprint 1</td>
+                    <td class="col-est">
+                        <span class="badge b-dev">D1:7</span>
+                        <span class="badge b-dev">D3:5</span>
+                        <span class="badge b-qa">Q1:7</span>
+                        <span class="badge b-qa">Q2:5</span>
+                        <span class="badge b-ba">BA:3</span>
+                        <span class="badge b-arch">AR:3</span>
+                    </td>
+                </tr>
+                <tr class="sprint-1">
+                    <td class="col-epic">User Registration</td>
+                    <td class="col-feature">Login</td>
+                    <td class="col-story">As a User, I Should be able to Login through App successfully after getting validated.</td>
+                    <td class="col-sprint">Sprint 1</td>
+                    <td class="col-est">
+                        <span class="badge b-dev">D2:5</span>
+                        <span class="badge b-dev">D3:7</span>
+                        <span class="badge b-qa">Q2:5</span>
+                        <span class="badge b-qa">Q3:7</span>
+                        <span class="badge b-ba">BA:3</span>
+                        <span class="badge b-arch">AR:3</span>
+                    </td>
+                </tr>
+                <tr class="sprint-1">
+                    <td class="col-epic">User Registration</td>
+                    <td class="col-feature">Login Error</td>
+                    <td class="col-story">As a User I should be able to get Error upon entering invalid credentials.</td>
+                    <td class="col-sprint">Sprint 1</td>
+                    <td class="col-est">
+                        <span class="badge b-dev">D1:5</span>
+                        <span class="badge b-dev">D2:7</span>
+                        <span class="badge b-qa">Q1:3</span>
+                        <span class="badge b-qa">Q3:5</span>
+                        <span class="badge b-ba">BA:3</span>
+                        <span class="badge b-arch">AR:3</span>
+                    </td>
+                </tr>
+                <tr class="sprint-1">
+                    <td class="col-epic">User Registration</td>
+                    <td class="col-feature">Reset Pass</td>
+                    <td class="col-story">As a User I should be able to reset the password and login with the new password.</td>
+                    <td class="col-sprint">Sprint 1</td>
+                    <td class="col-est">
+                        <span class="badge b-dev">D1:7</span>
+                        <span class="badge b-dev">D2:5</span>
+                        <span class="badge b-dev">D3:5</span>
+                        <span class="badge b-qa">Q1:7</span>
+                        <span class="badge b-qa">Q2:7</span>
+                        <span class="badge b-qa">Q3:3</span>
+                        <span class="badge b-ba">BA:3</span>
+                        <span class="badge b-arch">AR:3</span>
+                    </td>
+                </tr>
+
+                <tr class="sprint-2">
+                    <td class="col-epic">User Registration</td>
+                    <td class="col-feature">Delete Profile</td>
+                    <td class="col-story">As a User I should be able to Delete the Profile and should not receive any notifications further.</td>
+                    <td class="col-sprint">Sprint 2</td>
+                    <td class="col-est">
+                        <span class="badge b-dev">D2:7</span>
+                        <span class="badge b-dev">D3:5</span>
+                        <span class="badge b-qa">Q1:7</span>
+                        <span class="badge b-qa">Q2:5</span>
+                        <span class="badge b-qa">Q3:3</span>
+                        <span class="badge b-ba">BA:3</span>
+                        <span class="badge b-arch">AR:3</span>
+                    </td>
+                </tr>
+                <tr class="sprint-2">
+                    <td class="col-epic">Booking Flow</td>
+                    <td class="col-feature">Cab Search</td>
+                    <td class="col-story">As a User I should be able to enter/detect location and input Destination via maps.</td>
+                    <td class="col-sprint">Sprint 2</td>
+                    <td class="col-est">
+                        <span class="badge b-dev">D1:7</span>
+                        <span class="badge b-dev">D3:7</span>
+                        <span class="badge b-qa">Q1:5</span>
+                        <span class="badge b-qa">Q2:5</span>
+                        <span class="badge b-qa">Q3:5</span>
+                        <span class="badge b-ba">BA:3</span>
+                        <span class="badge b-arch">AR:3</span>
+                    </td>
+                </tr>
+                <tr class="sprint-2">
+                    <td class="col-epic">Booking Flow</td>
+                    <td class="col-feature">Route Preview</td>
+                    <td class="col-story">As a User I should be able to see the route preview.</td>
+                    <td class="col-sprint">Sprint 2</td>
+                    <td class="col-est">
+                        <span class="badge b-dev">D1:5</span>
+                        <span class="badge b-dev">D2:5</span>
+                        <span class="badge b-dev">D3:5</span>
+                        <span class="badge b-qa">Q1:5</span>
+                        <span class="badge b-qa">Q3:7</span>
+                        <span class="badge b-ba">BA:3</span>
+                        <span class="badge b-arch">AR:3</span>
+                    </td>
+                </tr>
+                <tr class="sprint-2">
+                    <td class="col-epic">Booking Flow</td>
+                    <td class="col-feature">Estimations</td>
+                    <td class="col-story">As a User I should be able to see Cab variants and their time for pickup along with Price estimation.</td>
+                    <td class="col-sprint">Sprint 2</td>
+                    <td class="col-est">
+                        <span class="badge b-dev">D1:5</span>
+                        <span class="badge b-dev">D2:5</span>
+                        <span class="badge b-qa">Q1:7</span>
+                        <span class="badge b-qa">Q2:5</span>
+                        <span class="badge b-ba">BA:3</span>
+                        <span class="badge b-arch">AR:3</span>
+                    </td>
+                </tr>
+
+                <tr class="sprint-3">
+                    <td class="col-epic">Booking Flow</td>
+                    <td class="col-feature">Select Cab</td>
+                    <td class="col-story">As a User I should be able to select one of the Cab type and proceed for Booking.</td>
+                    <td class="col-sprint">Sprint 3</td>
+                    <td class="col-est">
+                        <span class="badge b-dev">D1:1</span>
+                        <span class="badge b-dev">D2:5</span>
+                        <span class="badge b-dev">D3:7</span>
+                        <span class="badge b-qa">Q1:3</span>
+                        <span class="badge b-qa">Q2:7</span>
+                        <span class="badge b-qa">Q3:5</span>
+                        <span class="badge b-ba">BA:3</span>
+                        <span class="badge b-arch">AR:3</span>
+                    </td>
+                </tr>
+                <tr class="sprint-3">
+                    <td class="col-epic">Booking Flow</td>
+                    <td class="col-feature">Confirmation</td>
+                    <td class="col-story">As a User I should be able to get Driver Confirm notification and OTP once booking is confirmed.</td>
+                    <td class="col-sprint">Sprint 3</td>
+                    <td class="col-est">
+                        <span class="badge b-dev">D1:13</span>
+                        <span class="badge b-dev">D2:7</span>
+                        <span class="badge b-dev">D3:5</span>
+                        <span class="badge b-qa">Q1:7</span>
+                        <span class="badge b-qa">Q2:5</span>
+                        <span class="badge b-qa">Q3:7</span>
+                        <span class="badge b-ba">BA:5</span>
+                        <span class="badge b-arch">AR:3</span>
+                    </td>
+                </tr>
+                <tr class="sprint-3">
+                    <td class="col-epic">Booking Flow</td>
+                    <td class="col-feature">Tracking</td>
+                    <td class="col-story">As a User I should be able to Track driver live location and estimated time for Pick up.</td>
+                    <td class="col-sprint">Sprint 3</td>
+                    <td class="col-est">
+                        <span class="badge b-dev">D1:3</span>
+                        <span class="badge b-dev">D2:5</span>
+                        <span class="badge b-dev">D3:5</span>
+                        <span class="badge b-qa">Q1:7</span>
+                        <span class="badge b-qa">Q2:5</span>
+                        <span class="badge b-qa">Q3:5</span>
+                        <span class="badge b-ba">BA:5</span>
+                        <span class="badge b-arch">AR:5</span>
+                    </td>
+                </tr>
+
+                <tr class="sprint-4">
+                    <td class="col-epic">Booking Flow</td>
+                    <td class="col-feature">OTP Verification</td>
+                    <td class="col-story">As a User I should ensure valid OTP is verified for the Trip to kick start.</td>
+                    <td class="col-sprint">Sprint 4</td>
+                    <td class="col-est">
+                        <span class="badge b-dev">D1:5</span>
+                        <span class="badge b-dev">D2:5</span>
+                        <span class="badge b-dev">D3:7</span>
+                        <span class="badge b-qa">Q1:7</span>
+                        <span class="badge b-qa">Q2:5</span>
+                        <span class="badge b-qa">Q3:7</span>
+                        <span class="badge b-ba">BA:5</span>
+                        <span class="badge b-arch">AR:3</span>
+                    </td>
+                </tr>
+                <tr class="sprint-4">
+                    <td class="col-epic">Booking Flow</td>
+                    <td class="col-feature">Share Trip</td>
+                    <td class="col-story">As a User I should be allowed to view and share the trip live location.</td>
+                    <td class="col-sprint">Sprint 4</td>
+                    <td class="col-est">
+                        <span class="badge b-dev">D1:7</span>
+                        <span class="badge b-dev">D2:5</span>
+                        <span class="badge b-dev">D3:5</span>
+                        <span class="badge b-qa">Q1:3</span>
+                        <span class="badge b-qa">Q2:7</span>
+                        <span class="badge b-qa">Q3:7</span>
+                        <span class="badge b-ba">BA:5</span>
+                        <span class="badge b-arch">AR:3</span>
+                    </td>
+                </tr>
+                <tr class="sprint-4">
+                    <td class="col-epic">Booking Flow</td>
+                    <td class="col-feature">Cancel Trip</td>
+                    <td class="col-story">As a User I should be allowed to Cancel the trip before it gets started with reasons selected.</td>
+                    <td class="col-sprint">Sprint 4</td>
+                    <td class="col-est">
+                        <span class="badge b-dev">D1:5</span>
+                        <span class="badge b-dev">D2:7</span>
+                        <span class="badge b-dev">D3:5</span>
+                        <span class="badge b-qa">Q1:7</span>
+                        <span class="badge b-qa">Q2:5</span>
+                        <span class="badge b-qa">Q3:3</span>
+                        <span class="badge b-ba">BA:5</span>
+                        <span class="badge b-arch">AR:3</span>
+                    </td>
+                </tr>
+
+                <tr class="sprint-5">
+                    <td class="col-epic">Payment</td>
+                    <td class="col-feature">Price Notif</td>
+                    <td class="col-story">As a User I should get a notification once the destination is arrived and the Price to be paid.</td>
+                    <td class="col-sprint">Sprint 5</td>
+                    <td class="col-est">
+                        <span class="badge b-dev">D1:5</span>
+                        <span class="badge b-dev">D2:7</span>
+                        <span class="badge b-dev">D3:5</span>
+                        <span class="badge b-qa">Q1:3</span>
+                        <span class="badge b-qa">Q2:5</span>
+                        <span class="badge b-qa">Q3:7</span>
+                        <span class="badge b-ba">BA:5</span>
+                        <span class="badge b-arch">AR:3</span>
+                    </td>
+                </tr>
+                <tr class="sprint-5">
+                    <td class="col-epic">Payment</td>
+                    <td class="col-feature">Make Payment</td>
+                    <td class="col-story">As a User I should be able to make the payment upon trip completion (Cash/UPI/Wallets).</td>
+                    <td class="col-sprint">Sprint 5</td>
+                    <td class="col-est">
+                        <span class="badge b-dev">D1:13</span>
+                        <span class="badge b-dev">D2:5</span>
+                        <span class="badge b-dev">D3:5</span>
+                        <span class="badge b-qa">Q1:7</span>
+                        <span class="badge b-qa">Q2:7</span>
+                        <span class="badge b-qa">Q3:5</span>
+                        <span class="badge b-ba">BA:5</span>
+                        <span class="badge b-arch">AR:3</span>
+                    </td>
+                </tr>
+                <tr class="sprint-5">
+                    <td class="col-epic">Payment</td>
+                    <td class="col-feature">Confirmation</td>
+                    <td class="col-story">As a User, I should get notification as successfully paid and see trip status as completed.</td>
+                    <td class="col-sprint">Sprint 5</td>
+                    <td class="col-est">
+                        <span class="badge b-dev">D2:5</span>
+                        <span class="badge b-dev">D3:5</span>
+                        <span class="badge b-qa">Q1:7</span>
+                        <span class="badge b-qa">Q2:5</span>
+                        <span class="badge b-qa">Q3:5</span>
+                        <span class="badge b-ba">BA:5</span>
+                        <span class="badge b-arch">AR:3</span>
+                    </td>
+                </tr>
+
+                <tr class="sprint-6">
+                    <td class="col-epic">Payment</td>
+                    <td class="col-feature">Rating</td>
+                    <td class="col-story">As a User I should be able to rate the Captain and it should be optional.</td>
+                    <td class="col-sprint">Sprint 6</td>
+                    <td class="col-est">
+                        <span class="badge b-dev">D1:7</span>
+                        <span class="badge b-dev">D3:13</span>
+                        <span class="badge b-qa">Q1:3</span>
+                        <span class="badge b-qa">Q2:5</span>
+                        <span class="badge b-qa">Q3:7</span>
+                        <span class="badge b-ba">BA:5</span>
+                        <span class="badge b-arch">AR:5</span>
+                    </td>
+                </tr>
+                <tr class="sprint-6">
+                    <td class="col-epic">Payment</td>
+                    <td class="col-feature">Bill Summary</td>
+                    <td class="col-story">As a User I should be able to receive Trip Bill Summary to the Registered e-mail address.</td>
+                    <td class="col-sprint">Sprint 6</td>
+                    <td class="col-est">
+                        <span class="badge b-dev">D1:5</span>
+                        <span class="badge b-dev">D2:3</span>
+                        <span class="badge b-qa">Q1:7</span>
+                        <span class="badge b-qa">Q2:7</span>
+                        <span class="badge b-qa">Q3:5</span>
+                        <span class="badge b-ba">BA:5</span>
+                        <span class="badge b-arch">AR:3</span>
+                    </td>
+                </tr>
+                <tr class="sprint-6">
+                    <td class="col-epic">Support</td>
+                    <td class="col-feature">Emergency</td>
+                    <td class="col-story">As a User I should be able to click Emergency option if required during the Trip.</td>
+                    <td class="col-sprint">Sprint 6</td>
+                    <td class="col-est">
+                        <span class="badge b-dev">D1:5</span>
+                        <span class="badge b-dev">D2:13</span>
+                        <span class="badge b-dev">D3:5</span>
+                        <span class="badge b-qa">Q1:7</span>
+                        <span class="badge b-qa">Q2:5</span>
+                        <span class="badge b-qa">Q3:5</span>
+                        <span class="badge b-ba">BA:5</span>
+                        <span class="badge b-arch">AR:1</span>
+                    </td>
+                </tr>
+
+                <tr class="sprint-7">
+                    <td class="col-epic">Support</td>
+                    <td class="col-feature">Contact</td>
+                    <td class="col-story">As a User I should be able to contact customer care and support team for any Queries.</td>
+                    <td class="col-sprint">Sprint 7</td>
+                    <td class="col-est">
+                        <span class="badge b-dev">D1:3</span>
+                        <span class="badge b-dev">D2:7</span>
+                        <span class="badge b-dev">D3:13</span>
+                        <span class="badge b-qa">Q1:7</span>
+                        <span class="badge b-qa">Q2:5</span>
+                        <span class="badge b-qa">Q3:5</span>
+                        <span class="badge b-ba">BA:5</span>
+                        <span class="badge b-arch">AR:5</span>
+                    </td>
+                </tr>
+                <tr class="sprint-7">
+                    <td class="col-epic">Driver Interface</td>
+                    <td class="col-feature">Requests</td>
+                    <td class="col-story">As a Admin/Driver, Drivers can view new Requests, Accept and Reject requests.</td>
+                    <td class="col-sprint">Sprint 7</td>
+                    <td class="col-est">
+                        <span class="badge b-dev">D1:7</span>
+                        <span class="badge b-dev">D2:5</span>
+                        <span class="badge b-qa">Q1:5</span>
+                        <span class="badge b-qa">Q2:5</span>
+                        <span class="badge b-qa">Q3:5</span>
+                        <span class="badge b-ba">BA:5</span>
+                        <span class="badge b-arch">AR:3</span>
+                    </td>
+                </tr>
+                <tr class="sprint-7">
+                    <td class="col-epic">Driver Interface</td>
+                    <td class="col-feature">Docs</td>
+                    <td class="col-story">As a Admin/Driver, Drivers can Upload documents.</td>
+                    <td class="col-sprint">Sprint 7</td>
+                    <td class="col-est">
+                        <span class="badge b-dev">D1:7</span>
+                        <span class="badge b-dev">D2:5</span>
+                        <span class="badge b-dev">D3:5</span>
+                        <span class="badge b-qa">Q1:5</span>
+                        <span class="badge b-qa">Q2:5</span>
+                        <span class="badge b-qa">Q3:5</span>
+                        <span class="badge b-ba">BA:5</span>
+                        <span class="badge b-arch">AR:5</span>
+                    </td>
+                </tr>
+
+                <tr class="misc">
+                    <td colspan="4" style="text-align: right;">Story Estimates Subtotal</td>
+                    <td><strong>882 Days</strong></td>
+                </tr>
+                <tr class="misc">
+                    <td colspan="4" style="text-align: right;">Bug Fixing</td>
+                    <td><strong>9 Days</strong></td>
+                </tr>
+                <tr class="misc">
+                    <td colspan="4" style="text-align: right;">Adhoc Activities</td>
+                    <td><strong>9 Days</strong></td>
+                </tr>
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="4" style="text-align: right; text-transform: uppercase; font-weight: 600;">Grand Total Effort</td>
+                    <td class="total-highlight">900 DAYS</td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+
+</body>
+</html>

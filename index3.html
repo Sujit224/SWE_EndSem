@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cab Booking Project - Corrected Card View</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap');
+
+        :root {
+            --bg-color: #0f0c29;
+            --glass-bg: rgba(255, 255, 255, 0.05);
+            --glass-border: rgba(255, 255, 255, 0.1);
+            --text-main: #ffffff;
+            --text-secondary: #a0a0a0;
+            
+            /* Neon Palette for Borders */
+            --c1: #ff0055; /* Pink */
+            --c2: #00ff99; /* Green */
+            --c3: #00ccff; /* Blue */
+            --c4: #ffcc00; /* Yellow */
+            --c5: #9900ff; /* Purple */
+            --c6: #ff6600; /* Orange */
+
+            /* Role Colors for Badges */
+            --role-dev: #00e5ff;
+            --role-qa: #00ff9d;
+            --role-ba: #ffae00;
+            --role-arch: #d400ff;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(-45deg, #0f0c29, #302b63, #24243e, #000000);
+            background-size: 400% 400%;
+            animation: glideBackground 15s ease infinite;
+            color: var(--text-main);
+            min-height: 100vh;
+        }
+
+        @keyframes glideBackground {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        header {
+            text-align: center;
+            padding: 40px 20px;
+            background: rgba(0,0,0,0.3);
+            backdrop-filter: blur(5px);
+            border-bottom: 1px solid var(--glass-border);
+        }
+
+        h1 {
+            margin: 0;
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            background: linear-gradient(to right, #fff, #aaa);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 25px;
+        }
+
+        /* Glassmorphism Card Style */
+        .story-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid var(--glass-border);
+            border-radius: 16px;
+            padding: 25px;
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .story-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        /* Epic & Feature Labels */
+        .meta-info {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            opacity: 0.8;
+        }
+
+        .epic { font-weight: 700; }
+        .sprint { 
+            background: rgba(255,255,255,0.1); 
+            padding: 2px 8px; 
+            border-radius: 4px; 
+        }
+
+        h2.feature-title {
+            font-size: 1.1rem;
+            margin: 5px 0 15px 0;
+            font-weight: 600;
+            color: #fff;
+        }
+
+        .user-story-text {
+            font-size: 0.95rem;
+            line-height: 1.5;
+            color: #e0e0e0;
+            margin-bottom: 20px;
+            flex-grow: 1;
+        }
+
+        /* Estimates Footer */
+        .estimates {
+            border-top: 1px solid rgba(255,255,255,0.1);
+            padding-top: 15px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            font-size: 0.8rem;
+        }
+
+        /* Role Badge Styling */
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 4px 8px;
+            border-radius: 6px;
+            font-size: 0.7rem;
+            font-weight: 700;
+            background: rgba(0,0,0,0.4); 
+            border: 1px solid transparent;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+
+        .b-dev { border-color: var(--role-dev); color: var(--role-dev); }
+        .b-qa  { border-color: var(--role-qa);  color: var(--role-qa); }
+        .b-ba  { border-color: var(--role-ba);  color: var(--role-ba); }
+        .b-arch{ border-color: var(--role-arch);color: var(--role-arch); }
+
+        /* Summary Card Special Styling */
+        .summary-card {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            grid-column: 1 / -1;
+            text-align: center;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+        }
+        .total-text { font-size: 1.2rem; text-transform: uppercase; letter-spacing: 2px; }
+        .total-number { font-size: 2.5rem; font-weight: 800; color: #fff; text-shadow: 0 0 20px rgba(255,255,255,0.6); }
+
+
+        /* Dynamic Coloring using nth-child */
+        .story-card:nth-child(6n+1) { border-left: 4px solid var(--c1); box-shadow: inset 0 0 20px rgba(255, 0, 85, 0.05); }
+        .story-card:nth-child(6n+1) .epic { color: var(--c1); }
+
+        .story-card:nth-child(6n+2) { border-left: 4px solid var(--c2); box-shadow: inset 0 0 20px rgba(0, 255, 153, 0.05); }
+        .story-card:nth-child(6n+2) .epic { color: var(--c2); }
+
+        .story-card:nth-child(6n+3) { border-left: 4px solid var(--c3); box-shadow: inset 0 0 20px rgba(0, 204, 255, 0.05); }
+        .story-card:nth-child(6n+3) .epic { color: var(--c3); }
+
+        .story-card:nth-child(6n+4) { border-left: 4px solid var(--c4); box-shadow: inset 0 0 20px rgba(255, 204, 0, 0.05); }
+        .story-card:nth-child(6n+4) .epic { color: var(--c4); }
+
+        .story-card:nth-child(6n+5) { border-left: 4px solid var(--c5); box-shadow: inset 0 0 20px rgba(153, 0, 255, 0.05); }
+        .story-card:nth-child(6n+5) .epic { color: var(--c5); }
+
+        .story-card:nth-child(6n+6) { border-left: 4px solid var(--c6); box-shadow: inset 0 0 20px rgba(255, 102, 0, 0.05); }
+        .story-card:nth-child(6n+6) .epic { color: var(--c6); }
+
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Cab Booking App Project</h1>
+        <div style="font-size: 0.9rem; color: #aaa; margin-top: 5px;">Epic Feature & User Story Breakdown</div>
+        <div style="margin-top:15px; font-size:0.75rem; display:flex; justify-content:center; gap:10px;">
+            <span class="badge b-dev">DEV</span>
+            <span class="badge b-qa">QA</span>
+            <span class="badge b-ba">BA</span>
+            <span class="badge b-arch">ARCHITECT</span>
+        </div>
+    </header>
+
+    <div class="container">
+
+        <div class="story-card">
+            <div class="meta-info">
+                <span class="epic">User Registration</span>
+                <span class="sprint">Sprint 1</span>
+            </div>
+            <h2 class="feature-title">Registration</h2>
+            <p class="user-story-text">As a new user, I Should be able to Register through app successfully.</p>
+            <div class="estimates">
+                <span class="badge b-dev">D1: 7</span>
+                <span class="badge b-dev">D3: 5</span>
+                <span class="badge b-qa">Q1: 7</span>
+                <span class="badge b-qa">Q2: 5</span>
+                <span class="badge b-ba">BA: 3</span>
+                <span class="badge b-arch">AR: 3</span>
+            </div>
+        </div>
+
+        <div class="story-card">
+            <div class="meta-info">
+                <span class="epic">User Registration</span>
+                <span class="sprint">Sprint 1</span>
+            </div>
+            <h2 class="feature-title">User Login</h2>
+            <p class="user-story-text">As a User, I Should be able to Login through App successfully after getting validated credentials.</p>
+            <div class="estimates">
+                <span class="badge b-dev">D2: 5</span>
+                <span class="badge b-dev">D3: 7</span>
+                <span class="badge b-qa">Q2: 5</span>
+                <span class="badge b-qa">Q3: 7</span>
+                <span class="badge b-ba">BA: 3</span>
+                <span class="badge b-arch">AR: 3</span>
+            </div>
+        </div>
+
+        <div class="story-card">
+            <div class="meta-info">
+                <span class="epic">User Registration</span>
+                <span class="sprint">Sprint 1</span>
+            </div>
+            <h2 class="feature-title">Login Error</h2>
+            <p class="user-story-text">As a User I should be able to get Error upon entering invalid credentials.</p>
+            <div class="estimates">
+                <span class="badge b-dev">D1: 5</span>
+                <span class="badge b-dev">D2: 7</span>
+                <span class="badge b-qa">Q1: 3</span>
+                <span class="badge b-qa">Q3: 5</span>
+                <span class="badge b-ba">BA: 3</span>
+                <span class="badge b-arch">AR: 3</span>
+            </div>
+        </div>
+
+        <div class="story-card">
+            <div class="meta-info">
+                <span class="epic">User Registration</span>
+                <span class="sprint">Sprint 1</span>
+            </div>
+            <h2 class="feature-title">Reset Pass</h2>
+            <p class="user-story-text">As a User I should be able to reset the password and login with the new password.</p>
+            <div class="estimates">
+                <span class="badge b-dev">D1: 7</span>
+                <span class="badge b-dev">D2: 5</span>
+                <span class="badge b-dev">D3: 5</span>
+                <span class="badge b-qa">Q1: 7</span>
+                <span class="badge b-qa">Q2: 7</span>
+                <span class="badge b-qa">Q3: 3</span>
+                <span class="badge b-ba">BA: 3</span>
+                <span class="badge b-arch">AR: 3</span>
+            </div>
+        </div>
+
+        <div class="story-card">
+            <div class="meta-info">
+                <span class="epic">User Registration</span>
+                <span class="sprint">Sprint 2</span>
+            </div>
+            <h2 class="feature-title">Delete Profile</h2>
+            <p class="user-story-text">As a User I should be able to Delete the Profile and should not receive any notifications further.</p>
+            <div class="estimates">
+                <span class="badge b-dev">D2: 7</span>
+                <span class="badge b-dev">D3: 5</span>
+                <span class="badge b-qa">Q1: 7</span>
+                <span class="badge b-qa">Q2: 5</span>
+                <span class="badge b-qa">Q3: 3</span>
+                <span class="badge b-ba">BA: 3</span>
+                <span class="badge b-arch">AR: 3</span>
+            </div>
+        </div>
+
+        <div class="story-card">
+            <div class="meta-info">
+                <span class="epic">Booking Process</span>
+                <span class="sprint">Sprint 2</span>
+            </div>
+            <h2 class="feature-title">Cab Search</h2>
+            <p class="user-story-text">As a User I should be able to enter from location or detect live location and input Destination either manually or through maps.</p>
+            <div class="estimates">
+                <span class="badge b-dev">D1: 7</span>
+                <span class="badge b-dev">D3: 7</span>
+                <span class="badge b-qa">Q1: 5</span>
+                <span class="badge b-qa">Q2: 5</span>
+                <span class="badge b-qa">Q3: 5</span>
+                <span class="badge b-ba">BA: 3</span>
+                <span class="badge b-arch">AR: 3</span>
+            </div>
+        </div>
+
+        <div class="story-card">
+            <div class="meta-info">
+                <span class="epic">Booking Process</span>
+                <span class="sprint">Sprint 2</span>
+            </div>
+            <h2 class="feature-title">Route Preview</h2>
+            <p class="user-story-text">As a User I should be able to see the route preview.</p>
+            <div class="estimates">
+                <span class="badge b-dev">D1: 5</span>
+                <span class="badge b-dev">D2: 5</span>
+                <span class="badge b-dev">D3: 5</span>
+                <span class="badge b-qa">Q1: 5</span>
+                <span class="badge b-qa">Q3: 7</span>
+                <span class="badge b-ba">BA: 3</span>
+                <span class="badge b-arch">AR: 3</span>
+            </div>
+        </div>
+
+        <div class="story-card">
+            <div class="meta-info">
+                <span class="epic">Booking Process</span>
+                <span class="sprint">Sprint 2</span>
+            </div>
+            <h2 class="feature-title">Estimations</h2>
+            <p class="user-story-text">As a User I should be able to see Cab variants and their time for pickup along with the Price estimation.</p>
+            <div class="estimates">
+                <span class="badge b-dev">D1: 5</span>
+                <span class="badge b-dev">D2: 5</span>
+                <span class="badge b-qa">Q1: 7</span>
+                <span class="badge b-qa">Q2: 5</span>
+                <span class="badge b-ba">BA: 3</span>
+                <span class="badge b-arch">AR: 3</span>
+            </div>
+        </div>
+
+        <div class="story-card">
+            <div class="meta-info">
+                <span class="epic">Booking Process</span>
+                <span class="sprint">Sprint 3</span>
+            </div>
+            <h2 class="feature-title">Select Cab</h2>
+            <p class="user-story-text">As a User I should be able to select one of the Cab types and proceed for Booking.</p>
+            <div class="estimates">
+                <span class="badge b-dev">D1: 1</span>
+                <span class="badge b-dev">D2: 5</span>
+                <span class="badge b-dev">D3: 7</span>
+                <span class="badge b-qa">Q1: 3</span>
+                <span class="badge b-qa">Q2: 7</span>
+                <span class="badge b-qa">Q3: 5</span>
+                <span class="badge b-ba">BA: 3</span>
+                <span class="badge b-arch">AR: 3</span>
+            </div>
+        </div>
+
+        <div class="story-card">
+            <div class="meta-info">
+                <span class="epic">Booking Process</span>
+                <span class="sprint">Sprint 3</span>
+            </div>
+            <h2 class="feature-title">Confirmation</h2>
+            <p class="user-story-text">As a User I should be able to get Driver Confirm notification and OTP once booking is confirmed.</p>
+            <div class="estimates">
+                <span class="badge b-dev">D1: 13</span>
+                <span class="badge b-dev">D2: 7</span>
+                <span class="badge b-dev">D3: 5</span>
+                <span class="badge b-qa">Q1: 7</span>
+                <span class="badge b-qa">Q2: 5</span>
+                <span class="badge b-qa">Q3: 7</span>
+                <span class="badge b-ba">BA: 5</span>
+                <span class="badge b-arch">AR: 3</span>
+            </div>
+        </div>
+
+        <div class="story-card">
+            <div class="meta-info">
+                <span class="epic">Booking Process</span>
+                <span class="sprint">Sprint 3</span>
+            </div>
+            <h2 class="feature-title">Tracking</h2>
+            <p class="user-story-text">As a User I should be able to Track driver live location and estimated time for Pick up.</p>
+            <div class="estimates">
+                <span class="badge b-dev">D1: 3</span>
+                <span class="badge b-dev">D2: 5</span>
+                <span class="badge b-dev">D3: 5</span>
+                <span class="badge b-qa">Q1: 7</span>
+                <span class="badge b-qa">Q2: 5</span>
+                <span class="badge b-qa">Q3: 5</span>
+                <span class="badge b-ba">BA: 5</span>
+                <span class="badge b-arch">AR: 5</span>
+            </div>
+        </div>
+
+        <div class="story-card">
+            <div class="meta-info">
+                <span class="epic">Booking Process</span>
+                <span class="sprint">Sprint 4</span>
+            </div>
+            <h2 class="feature-title">OTP Verify</h2>
+            <p class="user-story-text">As a User I should ensure valid OTP is verified for the Trip to kick start.</p>
+            <div class="estimates">
+                <span class="badge b-dev">D1: 5</span>
+                <span class="badge b-dev">D2: 5</span>
+                <span class="badge b-dev">D3: 7</span>
+                <span class="badge b-qa">Q1: 7</span>
+                <span class="badge b-qa">Q2: 5</span>
+                <span class="badge b-qa">Q3: 7</span>
+                <span class="badge b-ba">BA: 5</span>
+                <span class="badge b-arch">AR: 3</span>
+            </div>
+        </div>
+
+        <div class="story-card">
+            <div class="meta-info">
+                <span class="epic">Booking Process</span>
+                <span class="sprint">Sprint 4</span>
+            </div>
+            <h2 class="feature-title">Share Trip</h2>
+            <p class="user-story-text">As a User I should be allowed to view and share the trip live location.</p>
+            <div class="estimates">
+                <span class="badge b-dev">D1: 7</span>
+                <span class="badge b-dev">D2: 5</span>
+                <span class="badge b-dev">D3: 5</span>
+                <span class="badge b-qa">Q1: 3</span>
+                <span class="badge b-qa">Q2: 7</span>
+                <span class="badge b-qa">Q3: 7</span>
+                <span class="badge b-ba">BA: 5</span>
+                <span class="badge b-arch">AR: 3</span>
+            </div>
+        </div>
+
+        <div class="story-card">
+            <div class="meta-info">
+                <span class="epic">Booking Process</span>
+                <span class="sprint">Sprint 4</span>
+            </div>
+            <h2 class="feature-title">Cancel Trip</h2>
+            <p class="user-story-text">As a User I should be allowed to Cancel the trip before it gets started with reasons selected.</p>
+            <div class="estimates">
+                <span class="badge b-dev">D1: 5</span>
+                <span class="badge b-dev">D2: 7</span>
+                <span class="badge b-dev">D3: 5</span>
+                <span class="badge b-qa">Q1: 7</span>
+                <span class="badge b-qa">Q2: 5</span>
+                <span class="badge b-qa">Q3: 3</span>
+                <span class="badge b-ba">BA: 5</span>
+                <span class="badge b-arch">AR: 3</span>
+            </div>
+        </div>
+
+        <div class="story-card">
+            <div class="meta-info">
+                <span class="epic">Payment & Notifs</span>
+                <span class="sprint">Sprint 5</span>
+            </div>
+            <h2 class="feature-title">Price Notif</h2>
+            <p class="user-story-text">As a User I should get a notification once the destination is arrived and the Price to be paid.</p>
+            <div class="estimates">
+                <span class="badge b-dev">D1: 5</span>
+                <span class="badge b-dev">D2: 7</span>
+                <span class="badge b-dev">D3: 5</span>
+                <span class="badge b-qa">Q1: 3</span>
+                <span class="badge b-qa">Q2: 5</span>
+                <span class="badge b-qa">Q3: 7</span>
+                <span class="badge b-ba">BA: 5</span>
+                <span class="badge b-arch">AR: 3</span>
+            </div>
+        </div>
+
+        <div class="story-card">
+            <div class="meta-info">
+                <span class="epic">Payment & Notifs</span>
+                <span class="sprint">Sprint 5</span>
+            </div>
+            <h2 class="feature-title">Make Payment</h2>
+            <p class="user-story-text">As a User I should be able to make the payment upon trip completion either through cash or UPI or wallets.</p>
+            <div class="estimates">
+                <span class="badge b-dev">D1: 13</span>
+                <span class="badge b-dev">D2: 5</span>
+                <span class="badge b-dev">D3: 5</span>
+                <span class="badge b-qa">Q1: 7</span>
+                <span class="badge b-qa">Q2: 7</span>
+                <span class="badge b-qa">Q3: 5</span>
+                <span class="badge b-ba">BA: 5</span>
+                <span class="badge b-arch">AR: 3</span>
+            </div>
+        </div>
+
+        <div class="story-card">
+            <div class="meta-info">
+                <span class="epic">Payment & Notifs</span>
+                <span class="sprint">Sprint 5</span>
+            </div>
+            <h2 class="feature-title">Confirmation</h2>
+            <p class="user-story-text">As a User, I should get notification as successfully paid and should see the trip status as completed.</p>
+            <div class="estimates">
+                <span class="badge b-dev">D2: 5</span>
+                <span class="badge b-dev">D3: 5</span>
+                <span class="badge b-qa">Q1: 7</span>
+                <span class="badge b-qa">Q2: 5</span>
+                <span class="badge b-qa">Q3: 5</span>
+                <span class="badge b-ba">BA: 5</span>
+                <span class="badge b-arch">AR: 3</span>
+            </div>
+        </div>
+
+        <div class="story-card">
+            <div class="meta-info">
+                <span class="epic">Payment & Notifs</span>
+                <span class="sprint">Sprint 6</span>
+            </div>
+            <h2 class="feature-title">Feedback</h2>
+            <p class="user-story-text">As a User I should be able to rate the Captain and it should be optional.</p>
+            <div class="estimates">
+                <span class="badge b-dev">D1: 7</span>
+                <span class="badge b-dev">D3: 13</span>
+                <span class="badge b-qa">Q1: 3</span>
+                <span class="badge b-qa">Q2: 5</span>
+                <span class="badge b-qa">Q3: 7</span>
+                <span class="badge b-ba">BA: 5</span>
+                <span class="badge b-arch">AR: 5</span>
+            </div>
+        </div>
+
+        <div class="story-card">
+            <div class="meta-info">
+                <span class="epic">Payment & Notifs</span>
+                <span class="sprint">Sprint 6</span>
+            </div>
+            <h2 class="feature-title">Bill Summary</h2>
+            <p class="user-story-text">As a User I should be able to receive Trip Bill Summary to the Registered e-mail address.</p>
+            <div class="estimates">
+                <span class="badge b-dev">D1: 5</span>
+                <span class="badge b-dev">D2: 3</span>
+                <span class="badge b-qa">Q1: 7</span>
+                <span class="badge b-qa">Q2: 7</span>
+                <span class="badge b-qa">Q3: 5</span>
+                <span class="badge b-ba">BA: 5</span>
+                <span class="badge b-arch">AR: 3</span>
+            </div>
+        </div>
+
+        <div class="story-card">
+            <div class="meta-info">
+                <span class="epic">Customer Support</span>
+                <span class="sprint">Sprint 6</span>
+            </div>
+            <h2 class="feature-title">Emergency</h2>
+            <p class="user-story-text">As a User I should be able to click Emergency option if required during the Trip.</p>
+            <div class="estimates">
+                <span class="badge b-dev">D1: 5</span>
+                <span class="badge b-dev">D2: 13</span>
+                <span class="badge b-dev">D3: 5</span>
+                <span class="badge b-qa">Q1: 7</span>
+                <span class="badge b-qa">Q2: 5</span>
+                <span class="badge b-qa">Q3: 5</span>
+                <span class="badge b-ba">BA: 5</span>
+                <span class="badge b-arch">AR: 1</span>
+            </div>
+        </div>
+
+        <div class="story-card">
+            <div class="meta-info">
+                <span class="epic">Customer Support</span>
+                <span class="sprint">Sprint 7</span>
+            </div>
+            <h2 class="feature-title">Contact Support</h2>
+            <p class="user-story-text">As a User I should be able to contact customer care and support team for any Queries.</p>
+            <div class="estimates">
+                <span class="badge b-dev">D1: 3</span>
+                <span class="badge b-dev">D2: 7</span>
+                <span class="badge b-dev">D3: 13</span>
+                <span class="badge b-qa">Q1: 7</span>
+                <span class="badge b-qa">Q2: 5</span>
+                <span class="badge b-qa">Q3: 5</span>
+                <span class="badge b-ba">BA: 5</span>
+                <span class="badge b-arch">AR: 5</span>
+            </div>
+        </div>
+
+        <div class="story-card">
+            <div class="meta-info">
+                <span class="epic">Driver Interface</span>
+                <span class="sprint">Sprint 7</span>
+            </div>
+            <h2 class="feature-title">Driver Requests</h2>
+            <p class="user-story-text">As a Admin/Driver, Drivers can view new Requests, Accept and Reject requests.</p>
+            <div class="estimates">
+                <span class="badge b-dev">D1: 7</span>
+                <span class="badge b-dev">D2: 5</span>
+                <span class="badge b-qa">Q1: 5</span>
+                <span class="badge b-qa">Q2: 5</span>
+                <span class="badge b-qa">Q3: 5</span>
+                <span class="badge b-ba">BA: 5</span>
+                <span class="badge b-arch">AR: 3</span>
+            </div>
+        </div>
+
+        <div class="story-card">
+            <div class="meta-info">
+                <span class="epic">Driver Interface</span>
+                <span class="sprint">Sprint 7</span>
+            </div>
+            <h2 class="feature-title">Upload Docs</h2>
+            <p class="user-story-text">As a Admin/Driver, Drivers can Upload documents.</p>
+            <div class="estimates">
+                <span class="badge b-dev">D1: 7</span>
+                <span class="badge b-dev">D2: 5</span>
+                <span class="badge b-dev">D3: 5</span>
+                <span class="badge b-qa">Q1: 5</span>
+                <span class="badge b-qa">Q2: 5</span>
+                <span class="badge b-qa">Q3: 5</span>
+                <span class="badge b-ba">BA: 5</span>
+                <span class="badge b-arch">AR: 5</span>
+            </div>
+        </div>
+
+        <div class="story-card summary-card">
+            <div class="total-text">Total Project Effort</div>
+            <div class="total-number">900 Days</div>
+        </div>
+
+    </div>
+
+</body>
+</html>

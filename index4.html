@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cab Booking - Interactive Flowchart</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap');
+
+        :root {
+            /* Palette */
+            --c1: #ff0055; /* Pink */
+            --c2: #00ff99; /* Green */
+            --c3: #00ccff; /* Blue */
+            --c4: #ffcc00; /* Yellow */
+            --c5: #9900ff; /* Purple */
+            --bg-glass: rgba(255, 255, 255, 0.05);
+            --border-glass: rgba(255, 255, 255, 0.15);
+            --line-color: rgba(255, 255, 255, 0.2);
+        }
+
+        body {
+            margin: 0;
+            padding: 40px;
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(-45deg, #0f0c29, #302b63, #24243e, #000000);
+            background-size: 400% 400%;
+            animation: glideBackground 15s ease infinite;
+            color: white;
+            min-height: 100vh;
+        }
+
+        @keyframes glideBackground {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        h1 {
+            text-align: center;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 10px;
+            text-shadow: 0 0 10px rgba(255,255,255,0.5);
+        }
+
+        p.subtitle {
+            text-align: center;
+            color: #aaa;
+            margin-bottom: 40px;
+            font-size: 0.9rem;
+        }
+
+        /* --- TREE CONTAINER --- */
+        .tree {
+            display: flex;
+            justify-content: center;
+        }
+
+        .tree ul {
+            padding-top: 20px; 
+            position: relative;
+            transition: all 0.5s;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding-left: 0; /* Remove default padding */
+        }
+
+        .tree li {
+            list-style-type: none;
+            position: relative;
+            padding: 20px 5px 0 5px;
+            transition: all 0.5s;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* --- THE CONNECTING LINES --- */
+        /* Vertical line from parent */
+        .tree li::before, .tree li::after {
+            content: '';
+            position: absolute; 
+            top: 0; 
+            right: 50%;
+            border-top: 2px solid var(--line-color);
+            width: 50%; 
+            height: 20px;
+            transition: all 0.3s;
+        }
+        
+        .tree li::after {
+            right: auto; 
+            left: 50%;
+            border-left: 2px solid var(--line-color);
+        }
+
+        /* Remove connectors from root */
+        .tree > ul > li::before, .tree > ul > li::after {
+            border: 0;
+        }
+
+        /* Remove connectors from only child */
+        .tree li:only-child::after, .tree li:only-child::before {
+            display: none;
+        }
+
+        /* Remove space from the top of single children */
+        .tree li:only-child{ padding-top: 0;}
+
+        /* Remove left connector from first child and right connector from last child */
+        .tree li:first-child::before, .tree li:last-child::after{
+            border: 0 none;
+        }
+
+        /* Adding back the vertical line to the last nodes */
+        .tree li:last-child::before{
+            border-right: 2px solid var(--line-color);
+            border-radius: 0 5px 0 0;
+        }
+        .tree li:first-child::after{
+            border-radius: 5px 0 0 0;
+        }
+
+        /* Vertical line down from the node to the children UL */
+        .tree ul ul::before{
+            content: '';
+            position: absolute; 
+            top: 0; 
+            left: 50%;
+            border-left: 2px solid var(--line-color);
+            width: 0; 
+            height: 20px;
+        }
+
+        /* --- THE CARDS (Nodes) --- */
+        .node {
+            cursor: pointer;
+            padding: 15px 25px;
+            text-decoration: none;
+            color: #fff;
+            font-size: 0.9rem;
+            display: inline-block;
+            border-radius: 10px;
+            transition: all 0.3s;
+            position: relative;
+            z-index: 10;
+            background: var(--bg-glass);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--border-glass);
+            min-width: 150px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            user-select: none;
+        }
+
+        .node:hover {
+            transform: scale(1.05);
+            background: rgba(255,255,255,0.15);
+            box-shadow: 0 0 15px rgba(255,255,255,0.3);
+            z-index: 20;
+        }
+
+        /* --- HIERARCHY STYLES --- */
+        
+        /* Level 1: EPICS */
+        .type-epic {
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border-bottom: 3px solid;
+            min-width: 200px;
+        }
+        
+        /* Epic Specific Colors */
+        .epic-1 { border-color: var(--c1); box-shadow: inset 0 -5px 15px rgba(255, 0, 85, 0.2); }
+        .epic-2 { border-color: var(--c2); box-shadow: inset 0 -5px 15px rgba(0, 255, 153, 0.2); }
+        .epic-3 { border-color: var(--c3); box-shadow: inset 0 -5px 15px rgba(0, 204, 255, 0.2); }
+        .epic-4 { border-color: var(--c4); box-shadow: inset 0 -5px 15px rgba(255, 204, 0, 0.2); }
+        .epic-5 { border-color: var(--c5); box-shadow: inset 0 -5px 15px rgba(153, 0, 255, 0.2); }
+
+        /* Level 2: FEATURES */
+        .type-feature {
+            font-weight: 600;
+            color: #ddd;
+            font-style: italic;
+            border: 1px dashed rgba(255,255,255,0.3);
+            min-width: 180px;
+        }
+
+        /* Level 3: USER STORIES */
+        .type-story {
+            font-weight: 300;
+            font-size: 0.85rem;
+            text-align: left;
+            max-width: 250px;
+            border-left: 3px solid #fff;
+            min-width: 250px;
+            white-space: normal;
+        }
+        .sprint-badge {
+            display: block;
+            font-size: 0.65rem;
+            opacity: 0.7;
+            margin-bottom: 5px;
+            text-transform: uppercase;
+            color: var(--c4);
+        }
+
+        /* --- COLLAPSIBLE LOGIC --- */
+        
+        /* By default, hide children ULs */
+        .tree li ul {
+            display: none;
+            opacity: 0;
+            transform: translateY(-20px);
+        }
+
+        /* Class to Show children */
+        .tree li.expanded > ul {
+            display: flex;
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Plus/Minus Indicator */
+        .indicator {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 0.8rem;
+            opacity: 0.5;
+        }
+
+        .node.leaf .indicator { display: none; } /* No indicator for items with no children */
+
+        /* Grand Total Node */
+        .root-node {
+            font-size: 1.5rem;
+            font-weight: 800;
+            background: rgba(255,255,255,0.1);
+            border: 2px solid #fff;
+            padding: 20px 40px;
+            box-shadow: 0 0 30px rgba(255,255,255,0.2);
+        }
+
+    </style>
+</head>
+<body>
+
+    <h1>Cab Booking Project Flow</h1>
+    <p class="subtitle">Click on any box to unfold/fold the details</p>
+
+    <div class="tree">
+        <ul>
+            <li class="expanded">
+                <div class="node root-node" onclick="toggleNode(this)">
+                    PROJECT TOTAL: 900 DAYS
+                    <span class="indicator">▼</span>
+                </div>
+                <ul>
+                    
+                    <li>
+                        <div class="node type-epic epic-1" onclick="toggleNode(this)">
+                            User Registration
+                            <span class="indicator">▶</span>
+                        </div>
+                        <ul>
+                            <li>
+                                <div class="node type-feature" onclick="toggleNode(this)">Registration<span class="indicator">▶</span></div>
+                                <ul>
+                                    <li><div class="node type-story leaf"><span class="sprint-badge">Sprint 1</span>As a new user, I Should be able to Register through app successfully.<br><br><b>(17 Days)</b></div></li>
+                                </ul>
+                            </li>
+                            <li>
+                                <div class="node type-feature" onclick="toggleNode(this)">Login<span class="indicator">▶</span></div>
+                                <ul>
+                                    <li><div class="node type-story leaf"><span class="sprint-badge">Sprint 1</span>As a User, I Should be able to Login through App successfully.<br><br><b>(13 Days)</b></div></li>
+                                    <li><div class="node type-story leaf"><span class="sprint-badge">Sprint 1</span>As a User I should be able to get Error upon entering invalid credentials.<br><br><b>(15 Days)</b></div></li>
+                                    <li><div class="node type-story leaf"><span class="sprint-badge">Sprint 1</span>As a User I should be able to reset the password.<br><br><b>(17 Days)</b></div></li>
+                                </ul>
+                            </li>
+                            <li>
+                                <div class="node type-feature" onclick="toggleNode(this)">Profile Mgmt<span class="indicator">▶</span></div>
+                                <ul>
+                                    <li><div class="node type-story leaf"><span class="sprint-badge">Sprint 2</span>As a User I should be able to Delete the Profile.<br><br><b>(17 Days)</b></div></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+
+                    <li>
+                        <div class="node type-epic epic-2" onclick="toggleNode(this)">
+                            Cab Booking
+                            <span class="indicator">▶</span>
+                        </div>
+                        <ul>
+                            <li>
+                                <div class="node type-feature" onclick="toggleNode(this)">Search<span class="indicator">▶</span></div>
+                                <ul>
+                                    <li><div class="node type-story leaf"><span class="sprint-badge">Sprint 2</span>Enter location or detect live location.<br><br><b>(17 Days)</b></div></li>
+                                    <li><div class="node type-story leaf"><span class="sprint-badge">Sprint 2</span>See route preview.<br><br><b>(17 Days)</b></div></li>
+                                    <li><div class="node type-story leaf"><span class="sprint-badge">Sprint 2</span>See Cab variants and Price estimation.<br><br><b>(15 Days)</b></div></li>
+                                </ul>
+                            </li>
+                            <li>
+                                <div class="node type-feature" onclick="toggleNode(this)">Booking Action<span class="indicator">▶</span></div>
+                                <ul>
+                                    <li><div class="node type-story leaf"><span class="sprint-badge">Sprint 3</span>Select Cab type and proceed for Booking.<br><br><b>(11 Days)</b></div></li>
+                                    <li><div class="node type-story leaf"><span class="sprint-badge">Sprint 3</span>Get Driver Confirm notification and OTP.<br><br><b>(25 Days)</b></div></li>
+                                    <li><div class="node type-story leaf"><span class="sprint-badge">Sprint 3</span>Track driver live location.<br><br><b>(20 Days)</b></div></li>
+                                    <li><div class="node type-story leaf"><span class="sprint-badge">Sprint 4</span>Valid OTP verification.<br><br><b>(24 Days)</b></div></li>
+                                    <li><div class="node type-story leaf"><span class="sprint-badge">Sprint 4</span>View and share trip live location.<br><br><b>(24 Days)</b></div></li>
+                                    <li><div class="node type-story leaf"><span class="sprint-badge">Sprint 4</span>Cancel the trip with reasons.<br><br><b>(19 Days)</b></div></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+
+                    <li>
+                        <div class="node type-epic epic-3" onclick="toggleNode(this)">
+                            Payment
+                            <span class="indicator">▶</span>
+                        </div>
+                        <ul>
+                            <li>
+                                <div class="node type-feature" onclick="toggleNode(this)">Payment<span class="indicator">▶</span></div>
+                                <ul>
+                                    <li><div class="node type-story leaf"><span class="sprint-badge">Sprint 5</span>Notification on arrival and Price.<br><br><b>(19 Days)</b></div></li>
+                                    <li><div class="node type-story leaf"><span class="sprint-badge">Sprint 5</span>Make payment (Cash/UPI/Wallets).<br><br><b>(27 Days)</b></div></li>
+                                    <li><div class="node type-story leaf"><span class="sprint-badge">Sprint 5</span>Success notification & Trip Complete.<br><br><b>(17 Days)</b></div></li>
+                                </ul>
+                            </li>
+                            <li>
+                                <div class="node type-feature" onclick="toggleNode(this)">Feedback<span class="indicator">▶</span></div>
+                                <ul>
+                                    <li><div class="node type-story leaf"><span class="sprint-badge">Sprint 6</span>Rate the Captain.<br><br><b>(30 Days)</b></div></li>
+                                    <li><div class="node type-story leaf"><span class="sprint-badge">Sprint 6</span>Trip Bill Summary via Email.<br><br><b>(19 Days)</b></div></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+
+                     <li>
+                        <div class="node type-epic epic-4" onclick="toggleNode(this)">
+                            Support
+                            <span class="indicator">▶</span>
+                        </div>
+                        <ul>
+                            <li>
+                                <div class="node type-feature" onclick="toggleNode(this)">Compliance<span class="indicator">▶</span></div>
+                                <ul>
+                                    <li><div class="node type-story leaf"><span class="sprint-badge">Sprint 6</span>Emergency option.<br><br><b>(30 Days)</b></div></li>
+                                    <li><div class="node type-story leaf"><span class="sprint-badge">Sprint 7</span>Contact Customer Care.<br><br><b>(32 Days)</b></div></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+
+                    <li>
+                        <div class="node type-epic epic-5" onclick="toggleNode(this)">
+                            Driver App
+                            <span class="indicator">▶</span>
+                        </div>
+                        <ul>
+                            <li>
+                                <div class="node type-feature" onclick="toggleNode(this)">Admin/Driver<span class="indicator">▶</span></div>
+                                <ul>
+                                    <li><div class="node type-story leaf"><span class="sprint-badge">Sprint 7</span>View, Accept, Reject Requests.<br><br><b>(22 Days)</b></div></li>
+                                    <li><div class="node type-story leaf"><span class="sprint-badge">Sprint 7</span>Upload Documents.<br><br><b>(27 Days)</b></div></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+
+                </ul>
+            </li>
+        </ul>
+    </div>
+
+    <script>
+        function toggleNode(element) {
+            // Find the parent LI
+            const parentLi = element.parentElement;
+            
+            // Toggle the 'expanded' class on the LI
+            parentLi.classList.toggle('expanded');
+
+            // Rotate indicator logic (Visual only)
+            const indicator = element.querySelector('.indicator');
+            if(indicator) {
+                if (parentLi.classList.contains('expanded')) {
+                    indicator.innerText = "▼";
+                } else {
+                    indicator.innerText = "▶";
+                }
+            }
+        }
+    </script>
+
+</body>
+</html>

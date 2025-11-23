@@ -1,0 +1,646 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SwiftRide SRS - Full Document with WBS Diagram</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap');
+
+        :root {
+            --bg: #0f172a;
+            --card-bg: rgba(30, 41, 59, 0.6);
+            --text: #f8fafc;
+            --border: rgba(255, 255, 255, 0.1);
+            
+            /* Theme Accents */
+            --cyan: #06b6d4; 
+            --purple: #8b5cf6;
+            --pink: #ec4899;
+            --orange: #f97316;
+            --green: #22c55e;
+            --yellow: #eab308;
+            --red: #f43f5e;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            font-family: 'Inter', sans-serif;
+            padding: 40px;
+            margin: 0;
+            background-image: 
+                linear-gradient(to bottom right, rgba(15, 23, 42, 0.9), rgba(15, 23, 42, 0.95)),
+                url('https://www.transparenttextures.com/patterns/cubes.png'); 
+        }
+
+        /* --- HEADER --- */
+        header {
+            text-align: center;
+            margin-bottom: 50px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            background: linear-gradient(to right, #fff, #94a3b8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 10px;
+        }
+
+        /* --- SECTIONS --- */
+        section {
+            margin-bottom: 50px;
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .section-num {
+            background: var(--cyan);
+            color: #000;
+            font-weight: 800;
+            width: 35px;
+            height: 35px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            margin-right: 15px;
+        }
+
+        .section-title {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: #fff;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* --- CARDS --- */
+        .card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+        }
+
+        /* --- TEAM --- */
+        .team-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 15px;
+            margin-bottom: 40px;
+        }
+        .team-member {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid var(--border);
+            padding: 12px;
+            border-radius: 8px;
+            text-align: center;
+            font-weight: 600;
+        }
+
+        /* --- LISTS --- */
+        ul.feature-list {
+            list-style: none;
+            padding: 0;
+        }
+        ul.feature-list li {
+            margin-bottom: 8px;
+            padding-left: 20px;
+            position: relative;
+            color: #cbd5e1;
+        }
+        ul.feature-list li::before {
+            content: "▹";
+            color: var(--cyan);
+            position: absolute;
+            left: 0;
+        }
+
+        /* --- REQ CARDS --- */
+        .req-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+        }
+        .req-box {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 20px;
+            transition: 0.2s;
+        }
+        .req-box:hover { border-color: var(--purple); transform: translateY(-3px); }
+        .req-id { color: var(--pink); font-size: 0.8rem; font-weight: 800; margin-bottom: 5px; display: block; }
+        .req-name { color: #fff; font-weight: 700; margin-bottom: 10px; font-size: 1.1rem; }
+
+        /* --- METRICS GRID --- */
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 15px;
+        }
+        .metric {
+            background: rgba(0,0,0,0.2);
+            padding: 15px;
+            border-left: 3px solid var(--green);
+            border-radius: 4px;
+        }
+        .metric-label { font-size: 0.75rem; text-transform: uppercase; color: #94a3b8; }
+        .metric-value { font-size: 1rem; font-weight: 700; color: #fff; margin-top: 5px; }
+
+        /* --- TABLES --- */
+        .table-responsive { overflow-x: auto; margin-bottom: 30px; }
+        table { width: 100%; border-collapse: collapse; min-width: 600px; margin-top: 10px; }
+        th { text-align: left; padding: 12px; background: rgba(255,255,255,0.1); color: var(--cyan); font-size: 0.85rem; text-transform: uppercase; }
+        td { padding: 12px; border-top: 1px solid var(--border); color: #cbd5e1; font-size: 0.9rem; }
+        tr:hover td { background: rgba(255,255,255,0.02); }
+
+        /* --- BUDGET --- */
+        .budget-row { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px dashed var(--border); }
+        .budget-total { font-size: 1.2rem; font-weight: 800; color: var(--green); margin-top: 15px; text-align: right; }
+
+        /* --- FLOWCHART STYLES (Shared for WBS & Decision Tree) --- */
+        .tree {
+            display: flex;
+            justify-content: center;
+            margin-top: 30px;
+            overflow-x: auto;
+            padding-bottom: 20px;
+        }
+        .tree ul {
+            padding-top: 20px; position: relative;
+            transition: all 0.5s;
+            display: flex; justify-content: center;
+        }
+        .tree li {
+            float: left; text-align: center;
+            list-style-type: none;
+            position: relative;
+            padding: 20px 10px 0 10px;
+            transition: all 0.5s;
+        }
+        .tree li::before, .tree li::after {
+            content: ''; position: absolute; top: 0; right: 50%;
+            border-top: 2px solid var(--border);
+            width: 50%; height: 20px;
+        }
+        .tree li::after { right: auto; left: 50%; border-left: 2px solid var(--border); }
+        .tree li:only-child::after, .tree li:only-child::before { display: none; }
+        .tree li:only-child{ padding-top: 0; }
+        .tree li:first-child::before, .tree li:last-child::after{ border: 0 none; }
+        .tree li:last-child::before{ border-right: 2px solid var(--border); border-radius: 0 5px 0 0; }
+        .tree li:first-child::after{ border-radius: 5px 0 0 0; }
+        .tree ul ul::before{
+            content: ''; position: absolute; top: 0; left: 50%;
+            border-left: 2px solid var(--border);
+            width: 0; height: 20px;
+        }
+
+        /* Flowchart Nodes */
+        .node {
+            padding: 10px 15px;
+            text-decoration: none;
+            color: #fff;
+            display: inline-block;
+            border-radius: 5px;
+            transition: all 0.3s;
+            position: relative;
+            z-index: 10;
+            font-size: 0.8rem;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid var(--border);
+            min-width: 100px;
+        }
+        
+        /* WBS Specific Nodes */
+        .node-wbs-root { font-size: 1rem; font-weight: 800; border-color: #fff; background: rgba(255,255,255,0.1); padding: 15px 25px; }
+        .node-wbs-lvl1 { font-weight: 700; color: var(--orange); border-color: var(--orange); background: rgba(249,115,22,0.1); }
+        .node-wbs-leaf { font-size: 0.75rem; color: #cbd5e1; border-style: dashed; }
+
+        /* Decision Tree Nodes */
+        .node-decision { border-color: var(--purple); color: var(--purple); font-weight: 700; background: rgba(139,92,246,0.1); }
+        .node-outcome { border-color: var(--green); color: var(--green); font-weight: 700; background: rgba(34,197,94,0.1); }
+        .node-fail { border-color: var(--red); color: var(--red); background: rgba(244,63,94,0.1); }
+        .node-warn { border-color: var(--orange); color: var(--orange); background: rgba(249,115,22,0.1); }
+        
+        .label-yes, .label-no {
+            position: absolute;
+            top: -15px;
+            font-size: 0.6rem;
+            color: #94a3b8;
+            background: var(--bg);
+            padding: 2px 4px;
+        }
+        .label-yes { right: 50%; }
+        .label-no { left: 50%; }
+
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>SwiftRide SRS</h1>
+        <p style="color: #94a3b8;">Software Requirements Specification for Online Cab Booking Platform</p>
+    </header>
+
+    <div class="team-grid">
+        <div class="team-member">1️⃣ Sai Sujit</div>
+        <div class="team-member">2️⃣ Satyam</div>
+        <div class="team-member">3️⃣ Shivansh</div>
+        <div class="team-member">4️⃣ Chandraveer</div>
+        <div class="team-member">5️⃣ Shivansh</div>
+        <div class="team-member">6️⃣ Aryan</div>
+    </div>
+
+    <section>
+        <div class="section-header">
+            <div class="section-num">1</div>
+            <div class="section-title">Introduction</div>
+        </div>
+        <div class="card">
+            <h3 style="color:var(--purple); margin-bottom:10px;">1.1 Purpose & 1.2 Scope</h3>
+            <p style="color:#cbd5e1; margin-bottom:15px;">
+                This SRS defines requirements for "SwiftRide," an online cab booking platform covering Passenger, Driver, and Admin modules.
+            </p>
+            <div style="display:grid; grid-template-columns: 1fr 1fr; gap:20px;">
+                <div>
+                    <strong style="color:#fff;">Core Features:</strong>
+                    <ul class="feature-list">
+                        <li>Instant & Scheduled Booking</li>
+                        <li>Real-time GPS Tracking</li>
+                        <li>Secure Payments</li>
+                        <li>Dynamic Pricing</li>
+                    </ul>
+                </div>
+                <div>
+                    <strong style="color:#fff;">System Coverage:</strong>
+                    <ul class="feature-list">
+                        <li>Mobile-First Design</li>
+                        <li>Scalable Architecture</li>
+                        <li>Operational Framework</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section>
+        <div class="section-header">
+            <div class="section-num">2</div>
+            <div class="section-title">General Description</div>
+        </div>
+        <div class="card">
+            <p style="color:#cbd5e1; margin-bottom:15px;">
+                SwiftRide connects passengers needing rides with drivers via a highly available backend. The system is optimized for:
+            </p>
+            <div style="display:grid; grid-template-columns: repeat(4, 1fr); gap:10px; text-align:center;">
+                <div style="background:rgba(255,255,255,0.05); padding:10px; border-radius:6px;">Minimal Wait Times</div>
+                <div style="background:rgba(255,255,255,0.05); padding:10px; border-radius:6px;">Max Driver Earnings</div>
+                <div style="background:rgba(255,255,255,0.05); padding:10px; border-radius:6px;">Transparent Pricing</div>
+                <div style="background:rgba(255,255,255,0.05); padding:10px; border-radius:6px;">Reliable Safety</div>
+            </div>
+        </div>
+    </section>
+
+    <section>
+        <div class="section-header">
+            <div class="section-num">3</div>
+            <div class="section-title">Functional Requirements</div>
+        </div>
+        <div class="req-container">
+            <div class="req-box">
+                <span class="req-id">FR-101</span>
+                <div class="req-name">User Onboarding</div>
+                <ul class="feature-list">
+                    <li>Login: Email, OTP, Social.</li>
+                    <li>Profile: Payment, Emergency Contacts.</li>
+                </ul>
+            </div>
+            <div class="req-box">
+                <span class="req-id">FR-102</span>
+                <div class="req-name">Ride Request</div>
+                <ul class="feature-list">
+                    <li>Map/Manual Pickup.</li>
+                    <li>Fare/ETA Estimates.</li>
+                    <li>Car Types (SUV, Luxury).</li>
+                </ul>
+            </div>
+            <div class="req-box">
+                <span class="req-id">FR-103</span>
+                <div class="req-name">GPS & Navigation</div>
+                <ul class="feature-list">
+                    <li>Real-time Tracking (4-6s).</li>
+                    <li>Share Live Trip.</li>
+                    <li>Driver Navigation.</li>
+                </ul>
+            </div>
+            <div class="req-box">
+                <span class="req-id">FR-104</span>
+                <div class="req-name">Payment System</div>
+                <ul class="feature-list">
+                    <li>Card, UPI, Wallets.</li>
+                    <li>Fare Breakdown.</li>
+                    <li>Promo Codes.</li>
+                </ul>
+            </div>
+            <div class="req-box">
+                <span class="req-id">FR-105</span>
+                <div class="req-name">Ratings & Feedback</div>
+                <ul class="feature-list">
+                    <li>1-5 Star Ratings.</li>
+                    <li>Comments & Issue Reporting.</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <section>
+        <div class="section-header">
+            <div class="section-num">4</div>
+            <div class="section-title">Interface Requirements</div>
+        </div>
+        <div class="card">
+            <div class="metrics-grid">
+                <div class="metric" style="border-color:var(--pink);">
+                    <div class="metric-label">UI / UX</div>
+                    <div class="metric-value">Modern, Responsive Mobile/Web</div>
+                </div>
+                <div class="metric" style="border-color:var(--pink);">
+                    <div class="metric-label">Backend Stack</div>
+                    <div class="metric-value">Node.js, Django</div>
+                </div>
+                <div class="metric" style="border-color:var(--pink);">
+                    <div class="metric-label">Database</div>
+                    <div class="metric-value">PostgreSQL / MongoDB</div>
+                </div>
+                <div class="metric" style="border-color:var(--pink);">
+                    <div class="metric-label">Mobile Tech</div>
+                    <div class="metric-value">Swift (iOS), Kotlin (Android)</div>
+                </div>
+                <div class="metric" style="border-color:var(--pink);">
+                    <div class="metric-label">External APIs</div>
+                    <div class="metric-value">Google Maps, Stripe/Razorpay</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section>
+        <div class="section-header">
+            <div class="section-num">5</div>
+            <div class="section-title">Performance Requirements</div>
+        </div>
+        <div class="card">
+            <div class="metrics-grid">
+                <div class="metric">
+                    <div class="metric-label">Login Time</div>
+                    <div class="metric-value">&lt; 3 seconds</div>
+                </div>
+                <div class="metric">
+                    <div class="metric-label">Driver Match</div>
+                    <div class="metric-value">&lt; 15 seconds</div>
+                </div>
+                <div class="metric">
+                    <div class="metric-label">GPS Updates</div>
+                    <div class="metric-value">Every 4-6 seconds</div>
+                </div>
+                <div class="metric">
+                    <div class="metric-label">Concurrent Users</div>
+                    <div class="metric-value">&ge; 1,500</div>
+                </div>
+                <div class="metric">
+                    <div class="metric-label">DB Transactions</div>
+                    <div class="metric-value">12,000 / min</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section>
+        <div class="section-header">
+            <div class="section-num">6</div>
+            <div class="section-title">Design Constraints</div>
+        </div>
+        <div class="card">
+            <ul class="feature-list">
+                <li><strong>Compatibility:</strong> iOS ≥13, Android ≥6.0, Modern Web Browsers.</li>
+                <li><strong>Security:</strong> bcrypt encryption, PCI-DSS for payments, GDPR compliance.</li>
+                <li><strong>Reliability:</strong> Cloud hosting, Load balanced servers.</li>
+            </ul>
+        </div>
+    </section>
+
+    <section>
+        <div class="section-header">
+            <div class="section-num">7</div>
+            <div class="section-title">Schedule & Budget</div>
+        </div>
+        <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 20px;">
+            <div class="card">
+                <h4 style="color:var(--cyan); margin-bottom:10px;">Project Timeline (40 Weeks)</h4>
+                <div class="table-responsive">
+                    <table>
+                        <tr><th>Phase</th><th>Time</th><th>Output</th></tr>
+                        <tr><td>Analysis</td><td>5 wks</td><td>Requirements</td></tr>
+                        <tr><td>Design</td><td>7 wks</td><td>Prototyping & DB</td></tr>
+                        <tr><td>Development</td><td>18 wks</td><td>Coding (App/Web)</td></tr>
+                        <tr><td>QA Testing</td><td>6 wks</td><td>UAT & Integration</td></tr>
+                        <tr><td>Launch</td><td>4 wks</td><td>Deployment</td></tr>
+                    </table>
+                </div>
+            </div>
+            <div class="card">
+                <h4 style="color:var(--yellow); margin-bottom:10px;">Budget Estimates</h4>
+                <div class="budget-row"><span>Backend</span><span>$50k</span></div>
+                <div class="budget-row"><span>Mobile</span><span>$70k</span></div>
+                <div class="budget-row"><span>Web</span><span>$30k</span></div>
+                <div class="budget-row"><span>Design</span><span>$25k</span></div>
+                <div class="budget-row"><span>QA</span><span>$20k</span></div>
+                <div class="budget-row"><span>Mgmt</span><span>$20k</span></div>
+                <div class="budget-total">$215,000</div>
+            </div>
+        </div>
+    </section>
+
+    <section>
+        <div class="section-header">
+            <div class="section-num">8</div>
+            <div class="section-title">Work Breakdown Structure (WBS)</div>
+        </div>
+        <div class="card">
+            
+            <h4 style="color:#fff; margin-bottom:15px; border-bottom:1px dashed var(--border); padding-bottom:10px;">WBS Text Hierarchy</h4>
+            <ul class="feature-list">
+                <li style="color:var(--orange); font-weight:bold;">1.0 Project Management</li>
+                <li style="color:var(--orange); font-weight:bold;">2.0 System Design</li>
+                <ul style="padding-left:20px; list-style:none; margin-bottom:10px;">
+                    <li style="color:#94a3b8;">2.1 Req Analysis, 2.2 Architecture, 2.3 DB Modeling</li>
+                </ul>
+                <li style="color:var(--orange); font-weight:bold;">3.0 Backend Implementation</li>
+                <ul style="padding-left:20px; list-style:none; margin-bottom:10px;">
+                    <li style="color:#94a3b8;">3.1 DB Setup, 3.2 Core APIs</li>
+                </ul>
+                <li style="color:var(--orange); font-weight:bold;">4.0 Frontend Implementation</li>
+                <li style="color:var(--orange); font-weight:bold;">5.0 Testing & QA</li>
+                <li style="color:var(--orange); font-weight:bold;">6.0 Deployment</li>
+            </ul>
+
+            <h4 style="color:#fff; margin-top:30px; margin-bottom:15px; border-top:1px dashed var(--border); padding-top:20px;">Visual WBS Hierarchy</h4>
+            
+            <div class="tree">
+                <ul>
+                    <li>
+                        <div class="node node-wbs-root">SwiftRide Project</div>
+                        <ul>
+                            
+                            <li><div class="node node-wbs-lvl1">1.0 Mgmt</div></li>
+
+                            <li>
+                                <div class="node node-wbs-lvl1">2.0 Design</div>
+                                <ul>
+                                    <li><div class="node node-wbs-leaf">2.1 Reqs</div></li>
+                                    <li><div class="node node-wbs-leaf">2.2 Arch</div></li>
+                                    <li><div class="node node-wbs-leaf">2.3 DB</div></li>
+                                </ul>
+                            </li>
+
+                            <li>
+                                <div class="node node-wbs-lvl1">3.0 Backend</div>
+                                <ul>
+                                    <li><div class="node node-wbs-leaf">3.1 Setup</div></li>
+                                    <li><div class="node node-wbs-leaf">3.2 APIs</div></li>
+                                </ul>
+                            </li>
+
+                            <li>
+                                <div class="node node-wbs-lvl1">4.0 Frontend</div>
+                                <ul>
+                                    <li><div class="node node-wbs-leaf">4.1 iOS</div></li>
+                                    <li><div class="node node-wbs-leaf">4.2 Android</div></li>
+                                    <li><div class="node node-wbs-leaf">4.3 Web</div></li>
+                                </ul>
+                            </li>
+
+                            <li><div class="node node-wbs-lvl1">5.0 QA</div></li>
+
+                            <li><div class="node node-wbs-lvl1">6.0 Deploy</div></li>
+
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+
+        </div>
+    </section>
+
+    <section>
+        <div class="section-header">
+            <div class="section-num">9</div>
+            <div class="section-title">Requirements Traceability Matrix</div>
+        </div>
+        <div class="card">
+            <div class="table-responsive">
+                <table>
+                    <thead>
+                        <tr><th>ID</th><th>Feature</th><th>Priority</th><th>Design</th><th>Test Case</th><th>Status</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>FR-101</td><td>Registration</td><td>High</td><td>UI-01</td><td>TC-01</td><td style="color:var(--orange)">Pending</td></tr>
+                        <tr><td>FR-102</td><td>Booking</td><td>High</td><td>UI-02</td><td>TC-05</td><td style="color:var(--orange)">Pending</td></tr>
+                        <tr><td>FR-103</td><td>GPS</td><td>High</td><td>UI-03</td><td>TC-09</td><td style="color:var(--orange)">Pending</td></tr>
+                        <tr><td>FR-104</td><td>Payments</td><td>High</td><td>UI-04</td><td>TC-12</td><td style="color:var(--orange)">Pending</td></tr>
+                        <tr><td>FR-105</td><td>Ratings</td><td>Medium</td><td>UI-05</td><td>TC-16</td><td style="color:var(--orange)">Pending</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+
+    <section>
+        <div class="section-header">
+            <div class="section-num">10</div>
+            <div class="section-title">Decision Tree & Table</div>
+        </div>
+        <div class="card">
+            <h4 style="color:#fff; margin-bottom:15px;">Ride Allocation Logic Table</h4>
+            <div class="table-responsive">
+                <table>
+                    <thead>
+                        <tr><th>Condition</th><th>Case 1</th><th>Case 2</th><th>Case 3</th><th>Case 4</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>Driver Available?</td><td>Yes</td><td>No</td><td>Yes</td><td>Yes</td></tr>
+                        <tr><td>Payment Selected?</td><td>Yes</td><td>-</td><td>No</td><td>Yes</td></tr>
+                        <tr><td>Surge Active?</td><td>No</td><td>-</td><td>Yes</td><td>Yes</td></tr>
+                        <tr style="font-weight:bold; background:rgba(255,255,255,0.05);">
+                            <td>OUTCOME</td>
+                            <td style="color:var(--green)">Assign</td>
+                            <td style="color:var(--red)">No Driver</td>
+                            <td style="color:var(--yellow)">Ask Pay</td>
+                            <td style="color:var(--purple)">Surge</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <h4 style="color:#fff; margin-top:30px; margin-bottom:15px; border-top:1px dashed var(--border); padding-top:20px;">Visual Decision Flow</h4>
+            <div class="tree">
+                <ul>
+                    <li>
+                        <div class="node">Start Request</div>
+                        <ul>
+                            <li>
+                                <div class="node node-decision">Driver Available?</div>
+                                <ul>
+                                    <li>
+                                        <span class="label-yes" style="left:50%">NO</span>
+                                        <div class="node node-fail">Error: No Driver</div>
+                                    </li>
+                                    <li>
+                                        <span class="label-yes" style="right:50%">YES</span>
+                                        <div class="node node-decision">Payment Set?</div>
+                                        <ul>
+                                            <li>
+                                                <span class="label-yes" style="left:50%">NO</span>
+                                                <div class="node node-warn">Prompt Payment</div>
+                                            </li>
+                                            <li>
+                                                <span class="label-yes" style="right:50%">YES</span>
+                                                <div class="node node-decision">Surge Active?</div>
+                                                <ul>
+                                                    <li>
+                                                        <span class="label-yes" style="left:50%">NO</span>
+                                                        <div class="node node-outcome">Assign Driver</div>
+                                                    </li>
+                                                    <li>
+                                                        <span class="label-yes" style="right:50%">YES</span>
+                                                        <div class="node node-outcome" style="background:rgba(139,92,246,0.2); color:#e2e8f0; border-color:var(--purple);">Apply Surge Pricing</div>
+                                                    </li>
+                                                </ul>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+
+        </div>
+    </section>
+
+</body>
+</html>
