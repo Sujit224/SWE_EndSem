@@ -3,105 +3,100 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>900-Day Project Timeline</title>
+    <title>Detailed Sprint Calendar 2026</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap');
 
         :root {
             --bg: #0f172a;
-            --card: #1e293b;
+            --card-bg: #1e293b;
             --text: #f8fafc;
             --border: #334155;
-            --accent: #38bdf8;
+            
+            /* Sprint Theme Colors */
+            --cyan: #06b6d4; --cyan-fade: rgba(6,182,212,0.1);
+            --purple: #8b5cf6; --purple-fade: rgba(139,92,246,0.1);
+            --pink: #ec4899; --pink-fade: rgba(236,72,153,0.1);
+            --orange: #f97316; --orange-fade: rgba(249,115,22,0.1);
+            --yellow: #eab308; --yellow-fade: rgba(234,179,8,0.1);
+            --green: #22c55e; --green-fade: rgba(34,197,94,0.1);
+            --red: #ef4444; --red-fade: rgba(239,68,68,0.1);
         }
 
         body {
             background-color: var(--bg);
             color: var(--text);
             font-family: 'Inter', sans-serif;
-            padding: 30px;
+            padding: 40px;
             margin: 0;
-        }
-
-        header {
-            text-align: center;
-            margin-bottom: 50px;
         }
 
         h1 {
-            font-size: 2.5rem;
-            font-weight: 800;
+            text-align: center;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 10px;
             background: linear-gradient(to right, #fff, #94a3b8);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            margin: 0;
-            letter-spacing: -1px;
         }
 
         p.subtitle {
+            text-align: center;
             color: #94a3b8;
-            margin-top: 10px;
-            font-size: 1.1rem;
+            margin-bottom: 50px;
         }
 
-        /* --- SPRINT ROW --- */
-        .sprint-row {
-            display: flex;
-            margin-bottom: 40px;
+        /* --- SPRINT SECTION --- */
+        .sprint-section {
+            margin-bottom: 60px;
             border: 1px solid var(--border);
-            border-radius: 16px;
+            border-radius: 12px;
+            padding: 25px;
             background: rgba(30, 41, 59, 0.3);
-            overflow: hidden;
-            flex-direction: column;
         }
 
-        .sprint-info {
-            padding: 20px 30px;
-            background: rgba(255,255,255,0.03);
-            border-bottom: 1px solid var(--border);
+        .sprint-header {
             display: flex;
-            align-items: center;
             justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
         }
 
         .sprint-title {
             font-size: 1.5rem;
-            font-weight: 700;
+            font-weight: 800;
             text-transform: uppercase;
-            letter-spacing: 1px;
-            display: flex;
-            align-items: center;
-            gap: 15px;
         }
 
-        .duration-badge {
-            background: rgba(0,0,0,0.3);
-            padding: 5px 12px;
+        .sprint-dates {
+            font-size: 1rem;
+            color: #cbd5e1;
+            background: rgba(255,255,255,0.05);
+            padding: 6px 15px;
             border-radius: 20px;
-            font-size: 0.8rem;
-            color: #94a3b8;
-            border: 1px solid rgba(255,255,255,0.1);
         }
 
-        /* --- CARDS GRID --- */
-        .timeline-grid {
+        /* --- CALENDAR GRID --- */
+        .days-grid {
             display: grid;
-            /* TIGHT PACKING: Columns min 160px wide */
-            grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+            /* Responsive grid: fit as many 180px cards as possible */
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
             gap: 15px;
-            padding: 20px;
         }
 
+        /* --- DAY CARD --- */
         .day-card {
-            background: var(--card);
+            background: var(--card-bg);
             border: 1px solid var(--border);
             border-radius: 8px;
-            padding: 15px;
+            padding: 12px;
             display: flex;
             flex-direction: column;
-            justify-content: space-between;
-            min-height: 140px;
-            transition: transform 0.2s, border-color 0.2s;
+            min-height: 160px;
+            transition: transform 0.2s;
             position: relative;
         }
 
@@ -112,12 +107,12 @@
             z-index: 10;
         }
 
-        .day-header {
+        .card-header {
             display: flex;
             justify-content: space-between;
             align-items: baseline;
             margin-bottom: 10px;
-            padding-bottom: 8px;
+            padding-bottom: 5px;
             border-bottom: 1px dashed rgba(255,255,255,0.1);
         }
 
@@ -127,195 +122,194 @@
             color: #fff;
         }
 
-        .day-label {
-            font-size: 0.7rem;
-            text-transform: uppercase;
-            color: #64748b;
-            font-weight: 600;
-        }
-
-        /* Event Styling */
-        .event {
+        .day-date {
             font-size: 0.75rem;
-            padding: 6px 8px;
+            color: #94a3b8;
+            text-transform: uppercase;
+        }
+
+        /* --- EVENTS --- */
+        .events-list {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            flex-grow: 1;
+        }
+
+        .event-pill {
+            font-size: 0.7rem;
+            padding: 4px 8px;
             border-radius: 4px;
-            margin-bottom: 5px;
-            line-height: 1.3;
+            color: #fff;
             font-weight: 500;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
 
-        .kickoff { background: rgba(255,255,255,0.1); color: #ccc; border-left: 2px solid #fff; }
-        
-        .completion { 
-            background: rgba(16, 185, 129, 0.15); 
-            color: #34d399; 
-            border: 1px solid rgba(16, 185, 129, 0.3);
+        .standup {
+            background: rgba(255,255,255,0.05);
+            border-left: 2px solid #94a3b8;
+            color: #cbd5e1;
         }
 
-        .retro { 
-            background: linear-gradient(135deg, #f43f5e, #e11d48); 
-            color: white; 
-            text-align: center; 
-            font-weight: 700;
+        .story-pill {
+            /* Theme colors injected via JS */
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+
+        .retro {
             margin-top: auto;
+            background: linear-gradient(135deg, #f43f5e, #e11d48);
+            text-align: center;
+            font-weight: 700;
+            box-shadow: 0 4px 10px rgba(244, 63, 94, 0.3);
         }
 
-        /* --- THEMES --- */
-        .s1 { border-left: 5px solid #06b6d4; } .s1 .day-num { color: #06b6d4; }
-        .s2 { border-left: 5px solid #8b5cf6; } .s2 .day-num { color: #8b5cf6; }
-        .s3 { border-left: 5px solid #ec4899; } .s3 .day-num { color: #ec4899; }
-        .s4 { border-left: 5px solid #f97316; } .s4 .day-num { color: #f97316; }
-        .s5 { border-left: 5px solid #eab308; } .s5 .day-num { color: #eab308; }
-        .s6 { border-left: 5px solid #22c55e; } .s6 .day-num { color: #22c55e; }
-        .s7 { border-left: 5px solid #ef4444; } .s7 .day-num { color: #ef4444; }
+        /* Theme Colors Classes */
+        .theme-cyan .sprint-title { color: var(--cyan); }
+        .theme-cyan .sprint-section { border-top: 3px solid var(--cyan); }
+        .theme-cyan .story-pill { background: var(--cyan-fade); border-color: var(--cyan); }
+
+        .theme-purple .sprint-title { color: var(--purple); }
+        .theme-purple .sprint-section { border-top: 3px solid var(--purple); }
+        .theme-purple .story-pill { background: var(--purple-fade); border-color: var(--purple); }
+
+        .theme-pink .sprint-title { color: var(--pink); }
+        .theme-pink .sprint-section { border-top: 3px solid var(--pink); }
+        .theme-pink .story-pill { background: var(--pink-fade); border-color: var(--pink); }
+
+        .theme-orange .sprint-title { color: var(--orange); }
+        .theme-orange .sprint-section { border-top: 3px solid var(--orange); }
+        .theme-orange .story-pill { background: var(--orange-fade); border-color: var(--orange); }
+
+        .theme-yellow .sprint-title { color: var(--yellow); }
+        .theme-yellow .sprint-section { border-top: 3px solid var(--yellow); }
+        .theme-yellow .story-pill { background: var(--yellow-fade); border-color: var(--yellow); color: #fff;}
+
+        .theme-green .sprint-title { color: var(--green); }
+        .theme-green .sprint-section { border-top: 3px solid var(--green); }
+        .theme-green .story-pill { background: var(--green-fade); border-color: var(--green); }
+
+        .theme-red .sprint-title { color: var(--red); }
+        .theme-red .sprint-section { border-top: 3px solid var(--red); }
+        .theme-red .story-pill { background: var(--red-fade); border-color: var(--red); }
 
     </style>
 </head>
 <body>
 
-    <header>
-        <h1>900-Day Project Roadmap</h1>
-        <p class="subtitle">Macro Timeline Divided by 7 Sprints (~128 Days per Phase)</p>
-    </header>
+    <h1>Project Execution Calendar</h1>
+    <p class="subtitle">Daily Schedule: Jan 1, 2026 – Jul 31, 2026</p>
 
-    <div id="timeline-container"></div>
+    <div id="calendar-container"></div>
 
     <script>
-        // Configuration: 900 Days / 7 Sprints = ~128 days per sprint
-        const SPRINT_DURATION = 128;
-        const START_DATE = new Date("2025-01-26");
+        // Project Start: Jan 1, 2026
+        // Each Sprint = 1 Calendar Month
+        const START_YEAR = 2026;
 
-        const sprintsData = [
+        const sprintsConfig = [
             {
-                id: 1, theme: "s1",
-                stories: [
-                    { finishDay: 25, name: "Registration Logic" },
-                    { finishDay: 50, name: "Login & Security" },
-                    { finishDay: 85, name: "Error Handling" },
-                    { finishDay: 110, name: "Reset Password" }
-                ]
+                id: 1, monthIndex: 0, theme: "theme-cyan", // Jan
+                stories: ["User Registration", "User Login", "Login Error Handling", "Reset Password Flow"]
             },
             {
-                id: 2, theme: "s2",
-                stories: [
-                    { finishDay: 30, name: "Profile Management" },
-                    { finishDay: 60, name: "Cab Search Core" },
-                    { finishDay: 90, name: "Route Preview Map" },
-                    { finishDay: 115, name: "Price Estimation" }
-                ]
+                id: 2, monthIndex: 1, theme: "theme-purple", // Feb
+                stories: ["Delete Profile", "Cab Search Maps", "Route Preview UI", "Price Estimation"]
             },
             {
-                id: 3, theme: "s3",
-                stories: [
-                    { finishDay: 20, name: "Cab Selection UI" },
-                    { finishDay: 65, name: "Driver Confirm & OTP" },
-                    { finishDay: 105, name: "Live Driver Tracking" }
-                ]
+                id: 3, monthIndex: 2, theme: "theme-pink", // Mar
+                stories: ["Select Cab Type", "Driver Confirmation", "OTP Generation", "Live Driver Tracking"]
             },
             {
-                id: 4, theme: "s4",
-                stories: [
-                    { finishDay: 45, name: "OTP Verification" },
-                    { finishDay: 80, name: "Share Live Trip" },
-                    { finishDay: 110, name: "Cancel Trip Logic" }
-                ]
+                id: 4, monthIndex: 3, theme: "theme-orange", // Apr
+                stories: ["Verify OTP Logic", "Share Live Trip", "Cancel Trip Reasons", "Trip Security"]
             },
             {
-                id: 5, theme: "s5",
-                stories: [
-                    { finishDay: 40, name: "Arrival Notification" },
-                    { finishDay: 85, name: "Payment Gateway" },
-                    { finishDay: 115, name: "Success Screens" }
-                ]
+                id: 5, monthIndex: 4, theme: "theme-yellow", // May
+                stories: ["Arrival Notification", "Payment Gateway", "Wallet Integration", "Success Screen"]
             },
             {
-                id: 6, theme: "s6",
-                stories: [
-                    { finishDay: 50, name: "Captain Rating" },
-                    { finishDay: 80, name: "Bill Emailer" },
-                    { finishDay: 115, name: "Emergency SOS" }
-                ]
+                id: 6, monthIndex: 5, theme: "theme-green", // Jun
+                stories: ["Captain Rating", "Feedback Form", "Bill Emailer", "Emergency SOS"]
             },
             {
-                id: 7, theme: "s7",
-                stories: [
-                    { finishDay: 55, name: "Support Chat" },
-                    { finishDay: 90, name: "Driver Requests" },
-                    { finishDay: 120, name: "Doc Upload" }
-                ]
+                id: 7, monthIndex: 6, theme: "theme-red", // Jul
+                stories: ["Support Chat", "Driver Request List", "Accept/Reject Logic", "Doc Upload"]
             }
         ];
 
-        const container = document.getElementById('timeline-container');
+        const container = document.getElementById('calendar-container');
 
-        // Helper: Add days to a date
-        function addDays(date, days) {
-            const result = new Date(date);
-            result.setDate(result.getDate() + days);
-            return result;
+        // Helper: Format Date
+        function formatDate(dateObj) {
+            return dateObj.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
         }
 
-        function formatDate(date) {
-            return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+        // Helper: Get Active Story based on day of month
+        // Distributes the list of stories evenly across the month
+        function getActiveStory(day, totalDays, stories) {
+            const segment = totalDays / stories.length;
+            const index = Math.floor((day - 1) / segment);
+            return stories[Math.min(index, stories.length - 1)];
         }
 
-        // Render Loop
-        sprintsData.forEach((sprint, index) => {
-            // Calculate Sprint Start/End based on cumulative 128-day blocks
-            const sprintStart = addDays(START_DATE, index * SPRINT_DURATION);
-            const sprintEnd = addDays(sprintStart, SPRINT_DURATION);
-
-            // Create Sprint Container
+        // --- RENDER LOOP ---
+        sprintsConfig.forEach(sprint => {
+            // Create Section
             const section = document.createElement('div');
-            section.className = `sprint-row ${sprint.theme}`;
+            section.className = `sprint-section ${sprint.theme}`;
+
+            // Date Logic
+            const startDate = new Date(START_YEAR, sprint.monthIndex, 1);
+            const endDate = new Date(START_YEAR, sprint.monthIndex + 1, 0); // Last day of month
+            const totalDays = endDate.getDate();
+
+            // Header
             section.innerHTML = `
-                <div class="sprint-info">
-                    <div class="sprint-title">
-                        Sprint ${sprint.id}
-                    </div>
-                    <div class="duration-badge">
-                        ${formatDate(sprintStart)} - ${formatDate(sprintEnd)} (${SPRINT_DURATION} Days)
+                <div class="sprint-header">
+                    <div class="sprint-title">Sprint ${sprint.id}</div>
+                    <div class="sprint-dates">
+                        ${startDate.toLocaleString('default', { month: 'long' })} ${START_YEAR}
                     </div>
                 </div>
-                <div class="timeline-grid" id="grid-${sprint.id}"></div>
+                <div class="days-grid" id="grid-${sprint.id}"></div>
             `;
             container.appendChild(section);
 
-            const grid = section.querySelector(`#grid-${sprint.id}`);
+            const grid = document.getElementById(`grid-${sprint.id}`);
 
-            // --- GENERATE CARDS FOR KEY DAYS ONLY ---
-            
-            // 1. Day 1 (Kickoff)
-            createCard(grid, 1, sprintStart, `<div class="event kickoff">🚀 Sprint Planning</div>`);
+            // Loop Days of the Month
+            for (let d = 1; d <= totalDays; d++) {
+                const currentDate = new Date(START_YEAR, sprint.monthIndex, d);
+                const currentStory = getActiveStory(d, totalDays, sprint.stories);
+                
+                // Is Last Day?
+                const isLastDay = (d === totalDays);
 
-            // 2. Story Completion Days
-            sprint.stories.forEach(story => {
-                const storyDate = addDays(sprintStart, story.finishDay);
-                createCard(grid, story.finishDay, storyDate, `
-                    <div class="event completion">✅ ${story.name}</div>
-                    <div style="font-size:0.65rem; opacity:0.6; margin-top:5px;">Feature Complete</div>
-                `);
-            });
+                const card = document.createElement('div');
+                card.className = 'day-card';
+                
+                let contentHtml = `
+                    <div class="card-header">
+                        <span class="day-num">${d}</span>
+                        <span class="day-date">${formatDate(currentDate)}</span>
+                    </div>
+                    <div class="events-list">
+                        <div class="event-pill standup">☕ Daily Standup</div>
+                        <div class="event-pill story-pill">🔨 ${currentStory}</div>
+                `;
 
-            // 3. Spacers (Optional - to fill grid visually if needed, skipping for density)
+                if (isLastDay) {
+                    contentHtml += `<div class="event-pill retro">🎉 SPRINT RETRO</div>`;
+                }
 
-            // 4. Last Day (Retro)
-            const retroDate = addDays(sprintStart, SPRINT_DURATION);
-            createCard(grid, SPRINT_DURATION, retroDate, `<div class="event retro">🎉 Retrospective</div>`);
+                contentHtml += `</div>`; // Close list
+                card.innerHTML = contentHtml;
+                grid.appendChild(card);
+            }
         });
-
-        function createCard(targetGrid, dayNum, dateObj, contentHtml) {
-            const card = document.createElement('div');
-            card.className = 'day-card';
-            card.innerHTML = `
-                <div class="day-header">
-                    <span class="day-num">Day ${dayNum}</span>
-                    <span class="day-label">${formatDate(dateObj)}</span>
-                </div>
-                <div>${contentHtml}</div>
-            `;
-            targetGrid.appendChild(card);
-        }
 
     </script>
 
