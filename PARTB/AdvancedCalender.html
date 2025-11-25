@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Detailed Sprint Calendar 2026</title>
+    <title>Sprint Calendar: Clean View</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap');
 
@@ -82,9 +82,9 @@
         /* --- CALENDAR GRID --- */
         .days-grid {
             display: grid;
-            /* Responsive grid: fit as many 180px cards as possible */
-            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-            gap: 15px;
+            /* Small, compact cards */
+            grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+            gap: 10px;
         }
 
         /* --- DAY CARD --- */
@@ -92,18 +92,18 @@
             background: var(--card-bg);
             border: 1px solid var(--border);
             border-radius: 8px;
-            padding: 12px;
+            padding: 10px;
             display: flex;
             flex-direction: column;
-            min-height: 160px;
+            min-height: 120px;
             transition: transform 0.2s;
             position: relative;
         }
 
         .day-card:hover {
-            transform: translateY(-5px);
+            transform: translateY(-3px);
             border-color: rgba(255,255,255,0.3);
-            box-shadow: 0 10px 20px rgba(0,0,0,0.4);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.4);
             z-index: 10;
         }
 
@@ -111,37 +111,28 @@
             display: flex;
             justify-content: space-between;
             align-items: baseline;
-            margin-bottom: 10px;
-            padding-bottom: 5px;
+            margin-bottom: 8px;
+            padding-bottom: 4px;
             border-bottom: 1px dashed rgba(255,255,255,0.1);
         }
 
-        .day-num {
-            font-size: 1.2rem;
-            font-weight: 800;
-            color: #fff;
-        }
-
-        .day-date {
-            font-size: 0.75rem;
-            color: #94a3b8;
-            text-transform: uppercase;
-        }
+        .day-num { font-size: 1.1rem; font-weight: 800; color: #fff; }
+        .day-date { font-size: 0.7rem; color: #94a3b8; text-transform: uppercase; }
 
         /* --- EVENTS --- */
         .events-list {
             display: flex;
             flex-direction: column;
-            gap: 5px;
+            gap: 4px;
             flex-grow: 1;
         }
 
         .event-pill {
-            font-size: 0.7rem;
-            padding: 4px 8px;
+            font-size: 0.65rem;
+            padding: 3px 6px;
             border-radius: 4px;
             color: #fff;
-            font-weight: 500;
+            font-weight: 600;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
@@ -156,6 +147,8 @@
         .story-pill {
             /* Theme colors injected via JS */
             border: 1px solid rgba(255,255,255,0.2);
+            display: flex;
+            justify-content: space-between;
         }
 
         .retro {
@@ -163,7 +156,7 @@
             background: linear-gradient(135deg, #f43f5e, #e11d48);
             text-align: center;
             font-weight: 700;
-            box-shadow: 0 4px 10px rgba(244, 63, 94, 0.3);
+            box-shadow: 0 2px 8px rgba(244, 63, 94, 0.3);
         }
 
         /* Theme Colors Classes */
@@ -195,78 +188,117 @@
         .theme-red .sprint-section { border-top: 3px solid var(--red); }
         .theme-red .story-pill { background: var(--red-fade); border-color: var(--red); }
 
+        /* Legend */
+        .legend-box {
+            background: var(--card-bg);
+            padding: 20px;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            margin-bottom: 40px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            justify-content: center;
+        }
+        .legend-item { font-size: 0.8rem; color: #94a3b8; background: rgba(255,255,255,0.05); padding: 4px 10px; border-radius: 4px; }
+        .legend-item b { color: #fff; margin-right: 5px; }
+
     </style>
 </head>
 <body>
 
-    <h1>Project Execution Calendar</h1>
-    <p class="subtitle">Daily Schedule: Jan 1, 2026 – Jul 31, 2026</p>
+    <h1>Execution Calendar 2026</h1>
+    <p class="subtitle">Compact View | Jan 1, 2026 Start | Monthly Sprints</p>
+
+
 
     <div id="calendar-container"></div>
 
     <script>
-        // Project Start: Jan 1, 2026
-        // Each Sprint = 1 Calendar Month
         const START_YEAR = 2026;
 
+        // Simplified Data Structure: ID + Short Title
         const sprintsConfig = [
             {
-                id: 1, monthIndex: 0, theme: "theme-cyan", // Jan
-                stories: ["User Registration", "User Login", "Login Error Handling", "Reset Password Flow"]
+                id: 1, monthIndex: 0, theme: "theme-cyan",
+                stories: [
+                    { id: "US-101", title: "Registration" },
+                    { id: "US-102", title: "Login Flow" },
+                    { id: "US-103", title: "Validation" },
+                    { id: "US-104", title: "Reset Pass" }
+                ]
             },
             {
-                id: 2, monthIndex: 1, theme: "theme-purple", // Feb
-                stories: ["Delete Profile", "Cab Search Maps", "Route Preview UI", "Price Estimation"]
+                id: 2, monthIndex: 1, theme: "theme-purple",
+                stories: [
+                    { id: "US-201", title: "Del Profile" },
+                    { id: "US-202", title: "Location" },
+                    { id: "US-203", title: "Route Map" },
+                    { id: "US-204", title: "Price Est" }
+                ]
             },
             {
-                id: 3, monthIndex: 2, theme: "theme-pink", // Mar
-                stories: ["Select Cab Type", "Driver Confirmation", "OTP Generation", "Live Driver Tracking"]
+                id: 3, monthIndex: 2, theme: "theme-pink",
+                stories: [
+                    { id: "US-301", title: "Select Cab" },
+                    { id: "US-302", title: "Driver OTP" },
+                    { id: "US-303", title: "Tracking" }
+                ]
             },
             {
-                id: 4, monthIndex: 3, theme: "theme-orange", // Apr
-                stories: ["Verify OTP Logic", "Share Live Trip", "Cancel Trip Reasons", "Trip Security"]
+                id: 4, monthIndex: 3, theme: "theme-orange",
+                stories: [
+                    { id: "US-401", title: "Verify OTP" },
+                    { id: "US-402", title: "Share Trip" },
+                    { id: "US-403", title: "Cancel Trip" }
+                ]
             },
             {
-                id: 5, monthIndex: 4, theme: "theme-yellow", // May
-                stories: ["Arrival Notification", "Payment Gateway", "Wallet Integration", "Success Screen"]
+                id: 5, monthIndex: 4, theme: "theme-yellow",
+                stories: [
+                    { id: "US-501", title: "Arrival Notif" },
+                    { id: "US-502", title: "Payments" },
+                    { id: "US-503", title: "Completion" }
+                ]
             },
             {
-                id: 6, monthIndex: 5, theme: "theme-green", // Jun
-                stories: ["Captain Rating", "Feedback Form", "Bill Emailer", "Emergency SOS"]
+                id: 6, monthIndex: 5, theme: "theme-green",
+                stories: [
+                    { id: "US-601", title: "Rating" },
+                    { id: "US-602", title: "Bill Email" },
+                    { id: "US-603", title: "Emergency" }
+                ]
             },
             {
-                id: 7, monthIndex: 6, theme: "theme-red", // Jul
-                stories: ["Support Chat", "Driver Request List", "Accept/Reject Logic", "Doc Upload"]
+                id: 7, monthIndex: 6, theme: "theme-red",
+                stories: [
+                    { id: "US-701", title: "Support" },
+                    { id: "US-702", title: "Driver Reqs" },
+                    { id: "US-703", title: "Doc Upload" }
+                ]
             }
         ];
 
         const container = document.getElementById('calendar-container');
 
-        // Helper: Format Date
         function formatDate(dateObj) {
             return dateObj.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
         }
 
-        // Helper: Get Active Story based on day of month
-        // Distributes the list of stories evenly across the month
         function getActiveStory(day, totalDays, stories) {
             const segment = totalDays / stories.length;
             const index = Math.floor((day - 1) / segment);
             return stories[Math.min(index, stories.length - 1)];
         }
 
-        // --- RENDER LOOP ---
         sprintsConfig.forEach(sprint => {
-            // Create Section
             const section = document.createElement('div');
             section.className = `sprint-section ${sprint.theme}`;
 
-            // Date Logic
             const startDate = new Date(START_YEAR, sprint.monthIndex, 1);
-            const endDate = new Date(START_YEAR, sprint.monthIndex + 1, 0); // Last day of month
+            const endDate = new Date(START_YEAR, sprint.monthIndex + 1, 0); 
             const totalDays = endDate.getDate();
 
-            // Header
             section.innerHTML = `
                 <div class="sprint-header">
                     <div class="sprint-title">Sprint ${sprint.id}</div>
@@ -280,12 +312,9 @@
 
             const grid = document.getElementById(`grid-${sprint.id}`);
 
-            // Loop Days of the Month
             for (let d = 1; d <= totalDays; d++) {
                 const currentDate = new Date(START_YEAR, sprint.monthIndex, d);
-                const currentStory = getActiveStory(d, totalDays, sprint.stories);
-                
-                // Is Last Day?
+                const story = getActiveStory(d, totalDays, sprint.stories);
                 const isLastDay = (d === totalDays);
 
                 const card = document.createElement('div');
@@ -297,15 +326,18 @@
                         <span class="day-date">${formatDate(currentDate)}</span>
                     </div>
                     <div class="events-list">
-                        <div class="event-pill standup">☕ Daily Standup</div>
-                        <div class="event-pill story-pill">🔨 ${currentStory}</div>
+                        <div class="event-pill standup">☕ Standup</div>
+                        <div class="event-pill story-pill">
+                            <span>${story.id}</span>
+                            <span>${story.title}</span>
+                        </div>
                 `;
 
                 if (isLastDay) {
-                    contentHtml += `<div class="event-pill retro">🎉 SPRINT RETRO</div>`;
+                    contentHtml += `<div class="event-pill retro">🎉 RETRO</div>`;
                 }
 
-                contentHtml += `</div>`; // Close list
+                contentHtml += `</div>`;
                 card.innerHTML = contentHtml;
                 grid.appendChild(card);
             }
