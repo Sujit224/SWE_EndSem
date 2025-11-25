@@ -220,12 +220,24 @@
             text-shadow: 0 0 10px rgba(255,255,255,0.8), 0 0 20px rgba(255,255,255,0.5);
         }
 
+        .story-id {
+            display: inline-block;
+            padding: 2px 6px;
+            border-radius: 4px;
+            background: rgba(255,255,255,0.1);
+            color: #fff;
+            font-size: 0.75rem;
+            font-family: monospace;
+            margin-right: 8px;
+            font-weight: 700;
+        }
+
     </style>
 </head>
 <body>
 
     <header>
-        <h1>Cab Booking Project - 900 Days</h1>
+        <h1>Cab Booking Project Backlog</h1>
         <div class="legend">
             <div class="legend-item"><span class="dot" style="background:rgb(var(--c-sprint1))"></span>Sprint 1</div>
             <div class="legend-item"><span class="dot" style="background:rgb(var(--c-sprint2))"></span>Sprint 2</div>
@@ -258,7 +270,7 @@
                 <tr class="sprint-1">
                     <td class="col-epic">User Registration</td>
                     <td class="col-feature">Registration</td>
-                    <td class="col-story">As a new user, I Should be able to Register through app successfully.</td>
+                    <td class="col-story"><span class="story-id">US-101</span>As a new user, I Should be able to Register through app successfully.</td>
                     <td class="col-sprint">Sprint 1</td>
                     <td class="col-est">
                         <span class="badge b-dev">D1:7</span>
@@ -272,7 +284,7 @@
                 <tr class="sprint-1">
                     <td class="col-epic">User Registration</td>
                     <td class="col-feature">Login</td>
-                    <td class="col-story">As a User, I Should be able to Login through App successfully after getting validated.</td>
+                    <td class="col-story"><span class="story-id">US-102</span>As a User, I Should be able to Login through App successfully.</td>
                     <td class="col-sprint">Sprint 1</td>
                     <td class="col-est">
                         <span class="badge b-dev">D2:5</span>
@@ -286,7 +298,7 @@
                 <tr class="sprint-1">
                     <td class="col-epic">User Registration</td>
                     <td class="col-feature">Login Error</td>
-                    <td class="col-story">As a User I should be able to get Error upon entering invalid credentials.</td>
+                    <td class="col-story"><span class="story-id">US-103</span>As a User I should be able to get Error upon entering invalid credentials.</td>
                     <td class="col-sprint">Sprint 1</td>
                     <td class="col-est">
                         <span class="badge b-dev">D1:5</span>
@@ -300,7 +312,7 @@
                 <tr class="sprint-1">
                     <td class="col-epic">User Registration</td>
                     <td class="col-feature">Reset Pass</td>
-                    <td class="col-story">As a User I should be able to reset the password and login with the new password.</td>
+                    <td class="col-story"><span class="story-id">US-104</span>As a User I should be able to reset the password and login with the new password.</td>
                     <td class="col-sprint">Sprint 1</td>
                     <td class="col-est">
                         <span class="badge b-dev">D1:7</span>
@@ -317,7 +329,7 @@
                 <tr class="sprint-2">
                     <td class="col-epic">User Registration</td>
                     <td class="col-feature">Delete Profile</td>
-                    <td class="col-story">As a User I should be able to Delete the Profile and should not receive any notifications further.</td>
+                    <td class="col-story"><span class="story-id">US-201</span>As a User I should be able to Delete the Profile.</td>
                     <td class="col-sprint">Sprint 2</td>
                     <td class="col-est">
                         <span class="badge b-dev">D2:7</span>
@@ -332,7 +344,7 @@
                 <tr class="sprint-2">
                     <td class="col-epic">Booking Flow</td>
                     <td class="col-feature">Cab Search</td>
-                    <td class="col-story">As a User I should be able to enter/detect location and input Destination via maps.</td>
+                    <td class="col-story"><span class="story-id">US-202</span>As a User I should be able to enter/detect location and input Destination.</td>
                     <td class="col-sprint">Sprint 2</td>
                     <td class="col-est">
                         <span class="badge b-dev">D1:7</span>
@@ -347,7 +359,7 @@
                 <tr class="sprint-2">
                     <td class="col-epic">Booking Flow</td>
                     <td class="col-feature">Route Preview</td>
-                    <td class="col-story">As a User I should be able to see the route preview.</td>
+                    <td class="col-story"><span class="story-id">US-203</span>As a User I should be able to see the route preview.</td>
                     <td class="col-sprint">Sprint 2</td>
                     <td class="col-est">
                         <span class="badge b-dev">D1:5</span>
@@ -362,7 +374,7 @@
                 <tr class="sprint-2">
                     <td class="col-epic">Booking Flow</td>
                     <td class="col-feature">Estimations</td>
-                    <td class="col-story">As a User I should be able to see Cab variants and their time for pickup along with Price estimation.</td>
+                    <td class="col-story"><span class="story-id">US-204</span>As a User I should be able to see Cab variants and Price estimation.</td>
                     <td class="col-sprint">Sprint 2</td>
                     <td class="col-est">
                         <span class="badge b-dev">D1:5</span>
@@ -377,7 +389,7 @@
                 <tr class="sprint-3">
                     <td class="col-epic">Booking Flow</td>
                     <td class="col-feature">Select Cab</td>
-                    <td class="col-story">As a User I should be able to select one of the Cab type and proceed for Booking.</td>
+                    <td class="col-story"><span class="story-id">US-301</span>As a User I should be able to select one of the Cab type and proceed for Booking.</td>
                     <td class="col-sprint">Sprint 3</td>
                     <td class="col-est">
                         <span class="badge b-dev">D1:1</span>
@@ -393,7 +405,7 @@
                 <tr class="sprint-3">
                     <td class="col-epic">Booking Flow</td>
                     <td class="col-feature">Confirmation</td>
-                    <td class="col-story">As a User I should be able to get Driver Confirm notification and OTP once booking is confirmed.</td>
+                    <td class="col-story"><span class="story-id">US-302</span>As a User I should be able to get Driver Confirm notification and OTP.</td>
                     <td class="col-sprint">Sprint 3</td>
                     <td class="col-est">
                         <span class="badge b-dev">D1:13</span>
@@ -409,7 +421,7 @@
                 <tr class="sprint-3">
                     <td class="col-epic">Booking Flow</td>
                     <td class="col-feature">Tracking</td>
-                    <td class="col-story">As a User I should be able to Track driver live location and estimated time for Pick up.</td>
+                    <td class="col-story"><span class="story-id">US-303</span>As a User I should be able to Track driver live location.</td>
                     <td class="col-sprint">Sprint 3</td>
                     <td class="col-est">
                         <span class="badge b-dev">D1:3</span>
@@ -426,7 +438,7 @@
                 <tr class="sprint-4">
                     <td class="col-epic">Booking Flow</td>
                     <td class="col-feature">OTP Verification</td>
-                    <td class="col-story">As a User I should ensure valid OTP is verified for the Trip to kick start.</td>
+                    <td class="col-story"><span class="story-id">US-401</span>As a User I should ensure valid OTP is verified for the Trip to kick start.</td>
                     <td class="col-sprint">Sprint 4</td>
                     <td class="col-est">
                         <span class="badge b-dev">D1:5</span>
@@ -442,7 +454,7 @@
                 <tr class="sprint-4">
                     <td class="col-epic">Booking Flow</td>
                     <td class="col-feature">Share Trip</td>
-                    <td class="col-story">As a User I should be allowed to view and share the trip live location.</td>
+                    <td class="col-story"><span class="story-id">US-402</span>As a User I should be allowed to view and share the trip live location.</td>
                     <td class="col-sprint">Sprint 4</td>
                     <td class="col-est">
                         <span class="badge b-dev">D1:7</span>
@@ -458,7 +470,7 @@
                 <tr class="sprint-4">
                     <td class="col-epic">Booking Flow</td>
                     <td class="col-feature">Cancel Trip</td>
-                    <td class="col-story">As a User I should be allowed to Cancel the trip before it gets started with reasons selected.</td>
+                    <td class="col-story"><span class="story-id">US-403</span>As a User I should be allowed to Cancel the trip before it gets started.</td>
                     <td class="col-sprint">Sprint 4</td>
                     <td class="col-est">
                         <span class="badge b-dev">D1:5</span>
@@ -475,7 +487,7 @@
                 <tr class="sprint-5">
                     <td class="col-epic">Payment</td>
                     <td class="col-feature">Price Notif</td>
-                    <td class="col-story">As a User I should get a notification once the destination is arrived and the Price to be paid.</td>
+                    <td class="col-story"><span class="story-id">US-501</span>As a User I should get a notification once the destination is arrived.</td>
                     <td class="col-sprint">Sprint 5</td>
                     <td class="col-est">
                         <span class="badge b-dev">D1:5</span>
@@ -491,7 +503,7 @@
                 <tr class="sprint-5">
                     <td class="col-epic">Payment</td>
                     <td class="col-feature">Make Payment</td>
-                    <td class="col-story">As a User I should be able to make the payment upon trip completion (Cash/UPI/Wallets).</td>
+                    <td class="col-story"><span class="story-id">US-502</span>As a User I should be able to make the payment upon trip completion.</td>
                     <td class="col-sprint">Sprint 5</td>
                     <td class="col-est">
                         <span class="badge b-dev">D1:13</span>
@@ -507,7 +519,7 @@
                 <tr class="sprint-5">
                     <td class="col-epic">Payment</td>
                     <td class="col-feature">Confirmation</td>
-                    <td class="col-story">As a User, I should get notification as successfully paid and see trip status as completed.</td>
+                    <td class="col-story"><span class="story-id">US-503</span>As a User, I should get notification as successfully paid.</td>
                     <td class="col-sprint">Sprint 5</td>
                     <td class="col-est">
                         <span class="badge b-dev">D2:5</span>
@@ -523,7 +535,7 @@
                 <tr class="sprint-6">
                     <td class="col-epic">Payment</td>
                     <td class="col-feature">Rating</td>
-                    <td class="col-story">As a User I should be able to rate the Captain and it should be optional.</td>
+                    <td class="col-story"><span class="story-id">US-601</span>As a User I should be able to rate the Captain and it should be optional.</td>
                     <td class="col-sprint">Sprint 6</td>
                     <td class="col-est">
                         <span class="badge b-dev">D1:7</span>
@@ -538,7 +550,7 @@
                 <tr class="sprint-6">
                     <td class="col-epic">Payment</td>
                     <td class="col-feature">Bill Summary</td>
-                    <td class="col-story">As a User I should be able to receive Trip Bill Summary to the Registered e-mail address.</td>
+                    <td class="col-story"><span class="story-id">US-602</span>As a User I should be able to receive Trip Bill Summary.</td>
                     <td class="col-sprint">Sprint 6</td>
                     <td class="col-est">
                         <span class="badge b-dev">D1:5</span>
@@ -553,7 +565,7 @@
                 <tr class="sprint-6">
                     <td class="col-epic">Support</td>
                     <td class="col-feature">Emergency</td>
-                    <td class="col-story">As a User I should be able to click Emergency option if required during the Trip.</td>
+                    <td class="col-story"><span class="story-id">US-603</span>As a User I should be able to click Emergency option if required.</td>
                     <td class="col-sprint">Sprint 6</td>
                     <td class="col-est">
                         <span class="badge b-dev">D1:5</span>
@@ -570,7 +582,7 @@
                 <tr class="sprint-7">
                     <td class="col-epic">Support</td>
                     <td class="col-feature">Contact</td>
-                    <td class="col-story">As a User I should be able to contact customer care and support team for any Queries.</td>
+                    <td class="col-story"><span class="story-id">US-701</span>As a User I should be able to contact customer care.</td>
                     <td class="col-sprint">Sprint 7</td>
                     <td class="col-est">
                         <span class="badge b-dev">D1:3</span>
@@ -586,7 +598,7 @@
                 <tr class="sprint-7">
                     <td class="col-epic">Driver Interface</td>
                     <td class="col-feature">Requests</td>
-                    <td class="col-story">As a Admin/Driver, Drivers can view new Requests, Accept and Reject requests.</td>
+                    <td class="col-story"><span class="story-id">US-702</span>As a Admin/Driver, Drivers can view new Requests.</td>
                     <td class="col-sprint">Sprint 7</td>
                     <td class="col-est">
                         <span class="badge b-dev">D1:7</span>
@@ -601,7 +613,7 @@
                 <tr class="sprint-7">
                     <td class="col-epic">Driver Interface</td>
                     <td class="col-feature">Docs</td>
-                    <td class="col-story">As a Admin/Driver, Drivers can Upload documents.</td>
+                    <td class="col-story"><span class="story-id">US-703</span>As a Admin/Driver, Drivers can Upload documents.</td>
                     <td class="col-sprint">Sprint 7</td>
                     <td class="col-est">
                         <span class="badge b-dev">D1:7</span>
